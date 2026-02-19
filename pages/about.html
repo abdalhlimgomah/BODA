@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <title>عن المتجر</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+        <style>
+            .abo {
+                font-family: monospace;
+                font-size: 2rem;
+                text-align: center;
+                text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+                color:aqua;
+            }
+.luxury-about {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    border-radius: 25px;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.35);
+    text-align: center;
+    color: #f0ffff;
+}
+
+.luxury-about h2 {
+    font-size: 3rem;
+    letter-spacing: 6px;
+    margin-bottom: 25px;
+    color: aqua;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+}
+
+.luxury-about p {
+    font-size: 1.3rem;
+    line-height: 2.2;
+}
+
+.luxury-about span {
+    color: aqua;
+    font-weight: bold;
+}
+
+.luxury-about em {
+    display: block;
+    margin-top: 25px;
+    font-style: normal;
+    font-size: 1.4rem;
+    color: #7fffd4;
+}
+
+        </style>
+    </head>
+    <body>
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+        <div class="header-search">
+            <form action="products.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <nav class="nav-menu">
+            <a href="../index.html">🏠 الرئيسية</a>
+            <a href="products.html">📦 المنتجات</a>
+            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
+            <a href="orders.html">📋 الطلبات</a>
+            <a href="wishlist.html">❤️ المفضلة</a>
+        </nav>
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link">
+                <div id="nav-cart-count-container" class="nav-cart-count-container">
+                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
+                    <span class="nav-cart-icon">🛒</span>
+                </div>
+                السلة
+            </a>
+        </div>
+    </header>
+
+        <div class="about-box">
+<div class="luxury-about">
+    <h2>BODA</h2>
+    <p>
+        ليس مجرد متجر، بل تجربة متكاملة صُمِّمت لتلبي تطلعات الباحثين عن التميز.
+        نقدم في <strong>BODA</strong> مجموعة مختارة بعناية فائقة من المنتجات
+        التي تجمع بين <span>الفخامة</span>، <span>الجودة العالية</span>،
+        و<span>الدقة في التفاصيل</span>.
+        <br><br>
+        نؤمن بأن الذوق الرفيع يبدأ من التفاصيل الصغيرة، لذلك نلتزم بتقديم
+        تجربة تسوق راقية تقوم على <span>الثقة</span>، <span>الاحترافية</span>
+        و<span>التميز</span>.
+        <br><br>
+        <em>BODA… حيث تتحول الجودة إلى أسلوب، والفخامة إلى هوية.</em>
+    </p>
+</div>
+
+</div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api-integration.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

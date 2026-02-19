@@ -1,0 +1,336 @@
+/* ============================================================
+   Responsive Design - تصميم متجاوب
+   BODA E-Commerce Platform
+   ============================================================ */
+
+/* Tablets - الأجهزة اللوحية (768px وأقل) */
+@media (max-width: 768px) {
+    header {
+        flex-wrap: wrap;
+        padding: 0.8rem;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    nav ul li a {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .cart-item {
+        flex-direction: column;
+    }
+
+    .cart-summary {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    button {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile - الهواتف الذكية (480px وأقل) */
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    nav ul {
+        width: 100%;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+
+    nav ul li a {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    main {
+        padding: 0.5rem;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    button {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+
+    input, textarea, select {
+        font-size: 16px; /* منع تكبير الخط على iOS */
+    }
+
+    table {
+        font-size: 0.85rem;
+        overflow-x: auto;
+        display: block;
+    }
+
+    thead {
+        font-size: 0.8rem;
+        display: none; /* إخفاء العناوين على الهاتف */
+    }
+
+    tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+
+    td {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+    }
+
+    td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 0.5rem;
+        color: #00d4ff;
+    }
+
+    .payment-methods {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .payment-method {
+        width: 100%;
+    }
+
+    .modal {
+        width: 90% !important;
+        max-width: 100% !important;
+    }
+
+    .hero-section h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-section p {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Extra small devices - الأجهزة الصغيرة جداً (360px وأقل) */
+@media (max-width: 360px) {
+    .logo {
+        font-size: 1rem;
+    }
+
+    nav ul li a {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    main {
+        padding: 0.25rem;
+    }
+
+    .container {
+        padding: 0.5rem;
+    }
+
+    button {
+        padding: 0.5rem 0.8rem !important;
+    }
+
+    h1 {
+        font-size: 1.2rem !important;
+    }
+
+    h2 {
+        font-size: 1rem !important;
+    }
+
+    h3 {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Large screens - الشاشات الكبيرة (1200px وأكثر) */
+@media (min-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    main {
+        padding: 2rem;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    nav ul {
+        gap: 1rem;
+    }
+}
+
+/* Extra large screens - الشاشات الضخمة (1600px وأكثر) */
+@media (min-width: 1600px) {
+    .product-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+
+    .container {
+        max-width: 1400px;
+    }
+}
+
+/* Landscape mode - وضع أفقي */
+@media (max-height: 500px) and (orientation: landscape) {
+    header {
+        padding: 0.5rem;
+    }
+
+    nav ul li a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    main {
+        padding: 0.5rem;
+    }
+}
+
+/* High DPI screens - الشاشات عالية الدقة */
+@media (min-resolution: 192dpi) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Dark mode - الوضع المظلم */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1b1b20 0%, #070220 50%, #0a0a0f 100%);
+        color: #e0e0e0;
+    }
+}
+
+/* Light mode - الوضع الفاتح */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.95);
+    }
+}
+
+/* Reduced motion - تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles - أنماط الطباعة */
+@media print {
+    header, nav, footer, .print-hide {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    main {
+        padding: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Accessibility - إمكانية الوصول */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Touch devices - الأجهزة التي تدعم اللمس */
+@media (hover: none) and (pointer: coarse) {
+    button:hover {
+        transform: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
+/* Non-touch devices - الأجهزة التي لا تدعم اللمس */
+@media (hover: hover) and (pointer: fine) {
+    button {
+        cursor: pointer;
+    }
+
+    a {
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1b1b20">
+    <title>التحقق من البريد - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        .verify-container {
+            max-width: 450px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .verify-container h2 {
+            font-family: 'Orbitron', monospace;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .verify-email-display {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .verify-email-display p {
+            color: #b0b0b0;
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .verify-email-display .email {
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .otp-input-container {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #00d4ff;
+            outline: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .otp-input:focus {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .verify-container button {
+            width: 100%;
+            padding: 1rem;
+            min-height: 48px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .verify-container button:hover {
+            background: linear-gradient(45deg, #0099cc, #00d4ff);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .verify-container button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .resend-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .resend-text {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .resend-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00d4ff;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .resend-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+        }
+
+        .timer {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .auth-message {
+            margin-bottom: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .auth-message.success {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.35);
+        }
+
+        .auth-message.error {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.35);
+        }
+
+        .auth-message.info {
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+    </header>
+
+    <div class="verify-container">
+        <h2>✉️ التحقق من بريدك الإلكتروني</h2>
+        <div id="auth-message" class="auth-message"></div>
+
+        <div class="verify-email-display">
+            <p>تم إرسال رمز التحقق إلى:</p>
+            <p class="email" id="email-display">جاري التحميل...</p>
+            <p style="font-size: 0.85rem; color: #888;">تحقق من مجلد الرسائل غير المرغوبة إذا لم تجده</p>
+        </div>
+
+        <form id="verify-form">
+            <p style="color: #b0b0b0; margin-bottom: 1.5rem;">أدخل رمز التحقق المكون من 6 أرقام:</p>
+            
+            <div class="otp-input-container">
+                <input type="text" class="otp-input" id="otp1" maxlength="1" placeholder="0" inputmode="numeric">
+                <input type="text" class="otp-input" id="otp2" maxlength="1" placeholder="0" inputmode="numeric">
+                <input type="text" class="otp-input" id="otp3" maxlength="1" placeholder="0" inputmode="numeric">
+                <input type="text" class="otp-input" id="otp4" maxlength="1" placeholder="0" inputmode="numeric">
+                <input type="text" class="otp-input" id="otp5" maxlength="1" placeholder="0" inputmode="numeric">
+                <input type="text" class="otp-input" id="otp6" maxlength="1" placeholder="0" inputmode="numeric">
+            </div>
+
+            <button type="submit" id="verify-btn">التحقق</button>
+        </form>
+
+        <div class="resend-section">
+            <p class="resend-text">لم تتلقَّ الرمز؟</p>
+            <button type="button" class="resend-btn" id="resend-btn" onclick="resendOTP()">إعادة إرسال الرمز</button>
+            <div style="margin-top: 1rem; color: #b0b0b0; font-size: 0.9rem;">
+                <p>يمكنك إعادة الإرسال بعد <span class="timer" id="resend-timer">0</span> ثانية</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/session-manager.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        let resendTimerInterval = null;
+        let otpCode = '';
+        let registrationData = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من البيانات المؤقتة
+            const tempData = sessionStorage.getItem('tempRegistration');
+            if (!tempData) {
+                window.location.href = 'register.html';
+                return;
+            }
+
+            registrationData = JSON.parse(tempData);
+            document.getElementById('email-display').textContent = registrationData.email;
+
+            // توليد وعرض رمز
+            generateAndDisplayOTP();
+
+            // معالجة المدخلات الرقمية
+            setupOTPInput();
+
+            // معالجة نموذج التحقق
+            document.getElementById('verify-form').addEventListener('submit', verifyOTP);
+
+            // بدء المؤقت للإعادة
+            startResendTimer();
+        });
+
+        function generateAndDisplayOTP() {
+            // توليد رمز عشوائي مكون من 6 أرقام
+            otpCode = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+            
+            // حفظ الرمز مؤقتاً (في بيئة حقيقية يتم إرساله بالبريد)
+            sessionStorage.setItem('otp_code', otpCode);
+            sessionStorage.setItem('otp_timestamp', Date.now().toString());
+
+            // عرض رسالة
+            showMessage('تم إرسال الرمز! استخدم الرمز التالي للاختبار: ' + otpCode, 'info');
+        }
+
+        function setupOTPInput() {
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`otp${i}`);
+                input.addEventListener('keyup', (e) => {
+                    if (e.target.value) {
+                        if (i < 6) {
+                            document.getElementById(`otp${i + 1}`).focus();
+                        }
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && i > 1) {
+                        document.getElementById(`otp${i - 1}`).focus();
+                    }
+                });
+
+                input.addEventListener('input', (e) => {
+                    // السماح فقط بالأرقام
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                });
+            }
+        }
+
+        async function verifyOTP(e) {
+            e.preventDefault();
+
+            // جمع الأرقام المدخلة
+            let enteredOTP = '';
+            for (let i = 1; i <= 6; i++) {
+                enteredOTP += document.getElementById(`otp${i}`).value;
+            }
+
+            // التحقق من الطول
+            if (enteredOTP.length !== 6) {
+                showMessage('يرجى إدخال جميع الأرقام الستة', 'error');
+                return;
+            }
+
+            // التحقق من الرمز
+            const savedOTP = sessionStorage.getItem('otp_code');
+            const otpTimestamp = parseInt(sessionStorage.getItem('otp_timestamp'));
+            const currentTime = Date.now();
+            const expireTime = 10 * 60 * 1000; // 10 دقائق
+
+            // التحقق من انتهاء الصلاحية
+            if (currentTime - otpTimestamp > expireTime) {
+                showMessage('انتهت صلاحية الرمز. يرجى طلب رمز جديد', 'error');
+                return;
+            }
+
+            // التحقق من صحة الرمز
+            if (enteredOTP !== savedOTP) {
+                showMessage('الرمز غير صحيح. حاول مجدداً', 'error');
+                return;
+            }
+
+            // اجتياز التحقق!
+            completeRegistration();
+        }
+
+        async function completeRegistration() {
+            document.getElementById('verify-btn').disabled = true;
+            showMessage('جاري إنهاء التسجيل...', 'info');
+
+            try {
+                // إضافة علامة حساب جديد
+                registrationData.isNewAccount = true;
+                registrationData.emailVerified = true;
+                registrationData.verifiedAt = new Date().toISOString();
+
+                // حفظ بيانات المستخدم
+                localStorage.setItem('userEmail', registrationData.email);
+                localStorage.setItem('userFullName', registrationData.fullName);
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('isNewAccount', 'true');
+                localStorage.setItem('emailVerified', 'true');
+
+                // حذف البيانات المؤقتة
+                sessionStorage.removeItem('tempRegistration');
+                sessionStorage.removeItem('otp_code');
+                sessionStorage.removeItem('otp_timestamp');
+
+                showMessage('✅ تم التحقق بنجاح! جاري التوجيه...', 'success');
+
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('حدث خطأ. حاول مرة أخرى', 'error');
+                document.getElementById('verify-btn').disabled = false;
+            }
+        }
+
+        function resendOTP() {
+            if (document.getElementById('resend-btn').disabled) return;
+            
+            generateAndDisplayOTP();
+            showMessage('تم إعادة إرسال الرمز!', 'success');
+            startResendTimer();
+        }
+
+        function startResendTimer() {
+            const btn = document.getElementById('resend-btn');
+            const timer = document.getElementById('resend-timer');
+            let seconds = 60;
+
+            btn.disabled = true;
+
+            if (resendTimerInterval) clearInterval(resendTimerInterval);
+
+            resendTimerInterval = setInterval(() => {
+                seconds--;
+                timer.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(resendTimerInterval);
+                    btn.disabled = false;
+                    timer.textContent = '0';
+                }
+            }, 1000);
+        }
+
+        function showMessage(message, type) {
+            const msgEl = document.getElementById('auth-message');
+            msgEl.textContent = message;
+            msgEl.className = 'auth-message ' + type;
+            msgEl.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

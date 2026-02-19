@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1b1b20">
+    <meta name="description" content="BODA - متجرك الإلكتروني المفضل. تسوق عبر الإنترنت بأفضل الأسعار والعروض.">
+    <title>🛍️ BODA</title>
+    <meta property="og:image" content="/images/Home/ChatGPT Image Jan 19, 2026, 07_46_56 PM.jpg" />
+    <meta property="og:title" content="🛍️ BODA" />
+    <meta property="og:description" content="بودا هو موقع تسوق إلكتروني يتيح للمستخدمين بيع وشراء المنتجات بسهولة. استمتع بتجربة تسوق فريدة حيث يمكنك بيع منتجاتك والتواصل مع المشترين، مع ضمان توصيل سريع وخدمة عملاء متميزة." />
+    <!-- Open Graph -->
+<meta property="og:title" content="بودا | منصة للبيع والشراء بسهولة">
+<meta property="og:description" content="بودا منصة تجارة إلكترونية تتيح لك عرض منتجاتك والتواصل مباشرة مع البائعين لإتمام البيع والشراء بسهولة وأمان.">
+<meta property="og:image" content="https://example.com/images/boda-og.jpg">
+<meta property="og:url" content="https://example.com">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+    <!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+    
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+        <div class="header-search">
+            <form action="pages/products.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html">🏠 الرئيسية</a>
+            <a href="pages/products.html">📦 المنتجات</a>
+            <a href="pages/login.html" id="login-link">🔐 تسجيل الدخول </a>
+            <a href="pages/orders.html">📋 الطلبات</a>
+            <a href="pages/wishlist.html">❤️ المفضلة</a>
+        </nav>
+        <div class="header-actions">
+            <a href="pages/cart.html" class="cart-link">
+                <div id="nav-cart-count-container" class="nav-cart-count-container">
+                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
+                    <span class="nav-cart-icon">🛒</span>
+                </div>
+                السلة
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section (like Noon.com) -->
+    <section class="hero-banner">
+        <div class="banner-content">
+            <h1>عروض اليوم - خصومات تصل إلى 50%</h1>
+            <p>اكتشف أفضل العروض على المنتجات الإلكترونية والملابس</p>
+        </div>
+        <div id="promo-box">
+            <img src="images/Home/ChatGPT Image Jan 19, 2026, 07_46_56 PM.jpg" class="promo-image active" alt="عروض اليوم 1" loading="lazy">
+            <img src="images/f1f89b39-5c2f-4ea9-804a-092d07ddce3.jpg" class="promo-image" alt="عروض اليوم 2" loading="lazy">
+            <img src="images/32618787-22d7-46e5-9f80-423e2b39f8a7.jpg" class="promo-image" alt="عروض اليوم 3" loading="lazy">
+            <img src="images/40acd78f-ff3c-4e91-9861-32406a7a6633.jpg" class="promo-image" alt="عروض اليوم 4" loading="lazy">
+        </div>
+    </section>
+
+    <main>
+        <!-- Categories Section (expanded like Noon.com) -->
+        <section class="categories">
+            <h2>الأقسام الرئيسية</h2>
+            <div class="category-grid">
+                <div class="category" onclick="filterByCategory('ملابس وأحذية')">
+                    <img src="images/ea665be0-a0a3-47e3-bb6e-eca910e85b9b.jpg" alt="ملابس وأحذية" loading="lazy">
+                    <p>ملابس وأحذية</p>
+                </div>
+                <div class="category" onclick="filterByCategory('إلكترونيات')">
+                    <img src="images/f1f89b39-5c2f-4ea9-804a-092d07ddce3.jpg" alt="إلكترونيات" loading="lazy">
+                    <p>إلكترونيات</p>
+                </div>
+                <div class="category" onclick="filterByCategory('جمال وعناية')">
+                    <img src="images/7d7a0e08-5ebb-44ff-9b3c-286cc7a779ba.jpg" alt="جمال وعناية" loading="lazy">
+                    <p>جمال وعناية</p>
+                </div>
+                <div class="category" onclick="filterByCategory('رياضة وترفيه')">
+                    <img src="images/1500f00c-203a-4365-a138-c158b8c228d3.jpg" alt="رياضة وترفيه" loading="lazy">
+                    <p>رياضة وترفيه</p>
+                </div>
+                <div class="category" onclick="filterByCategory('منزل ومطبخ')">
+                    <img src="images/dc9cb611-06d9-4c30-96d1-cff84f94fbe8.jpg" alt="منزل ومطبخ" loading="lazy">
+                    <p>منزل ومطبخ</p>
+                </div>
+                <div class="category" onclick="filterByCategory('أطفال وألعاب')">
+                    <img src="images/33c54bff-bf76-4f95-858a-f45218829778.jpg" alt="أطفال وألعاب" loading="lazy">
+                    <p>أطفال وألعاب</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Deals Section (dynamically populated) -->
+        <section class="featured-deals">
+            <h2>عروض مميزة</h2>
+            <div class="deal-grid" id="featured-deals-grid">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+
+        <!-- Products Section (dynamically populated) -->
+        <section class="products">
+            <h2>المنتجات</h2>
+            
+            <div class="filters">
+                <button onclick="filterProducts('all')" class="filter-btn active">الكل</button>
+                                <button onclick="filterProducts('ملابس وأحذية')" class="filter-btn">ملابس</button>
+                <button onclick="filterProducts('إلكترونيات')" class="filter-btn">إلكترونيات</button>
+                <button onclick="filterProducts('جمال وعناية')" class="filter-btn">جمال</button>
+                <button onclick="filterProducts('رياضة وترفيه')" class="filter-btn">رياضة</button>
+                <button onclick="filterProducts('منزل ومطبخ')" class="filter-btn">منزل</button>
+                <select id="sort" onchange="sortHomePageProducts()">
+                    <option value="price-low">السعر: من الأقل للأعلى</option>
+                    <option value="price-high">السعر: من الأعلى للأقل</option>
+                    <option value="rating">التقييم</option>
+                </select>
+            </div>
+            <div class="product-grid" id="product-grid">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 BODA. جميع الحقوق محفوظة.</p>
+        <div class="footer-links">
+            <a href="pages/about.html">عن المتجر</a>
+            <a href="pages/contact.html">اتصل بنا</a>  
+            <a href="pages/privacy.html">سياسة الخصوصية</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/mock-api.js"></script>
+    <script src="js/api-integration.js"></script>
+    <script src="js/session-manager.js"></script>
+    <script src="js/performance.js" defer></script>
+    <script src="js/script.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    renderHomePage();
+});
+
+function renderHomePage() {
+    const all = Object.values(getAllProducts());
+
+    // 1️⃣ Render Featured Deals (First 3)
+    const featuredGrid = document.getElementById('featured-deals-grid');
+    if (featuredGrid) {
+        const featured = all.slice(0, 3);
+        featuredGrid.innerHTML = featured.map(p => createProductCard(p, "deal-item")).join('');
+    }
+
+    // 2️⃣ Render All Products
+    renderProductGrid(all);
+}
+
+// ✅ دالة موحدة لإنشاء كارت المنتج
+function createProductCard(p, className = "product-item") {
+    const hasDiscount = p.discountPrice && p.discountPrice < p.price;
+    const discountPercent = hasDiscount
+        ? Math.round(((p.price - p.discountPrice) / p.price) * 100)
+        : 0;
+
+    return `
+        <div class="${className}" onclick="viewProduct('${p.id}')">
+            <div style="position: relative;">
+                <img src="${getImagePath(p.image)}" alt="${p.name}" loading="lazy">
+                ${hasDiscount ? `
+                    <div class="discount-badge"
+                        style="position:absolute;top:10px;right:10px;background:#ff4d4d;color:white;padding:2px 8px;border-radius:4px;font-weight:bold;font-size:0.8em;">
+                        -${discountPercent}%
+                    </div>` : ''}
+            </div>
+
+            <h3>${p.name}</h3>
+
+            <div class="price-container">
+                ${hasDiscount ? `
+                    <span class="old-price"
+                        style="text-decoration:line-through;color:#888;font-size:0.9em;margin-left:5px;">
+                        ${p.price.toFixed(2)}
+                    </span>
+                    <span class="current-price"
+                        style="color:#00d4ff;font-weight:bold;">
+                        ${p.discountPrice.toFixed(2)} ج.م
+                    </span>
+                ` : `
+                    <span class="current-price"
+                        style="color:#00d4ff;font-weight:bold;">
+                        ${p.price.toFixed(2)} ج.م
+                    </span>
+                `}
+            </div>
+
+            ${p.rating > 0 ? `
+                <div class="rating">
+                    ${renderStars(p.rating)} (${p.rating})
+                </div>
+            ` : ''}
+
+            <div class="product-actions">
+                <button onclick="event.stopPropagation(); addToCartById('${p.id}')">
+                    أضف إلى العربة
+                </button>
+                <button onclick="event.stopPropagation(); toggleWishlist('${p.id}')" 
+                    class="btn-wishlist">
+                    ❤️ المفضلة
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// ✅ عرض المنتجات
+function renderProductGrid(products) {
+    const grid = document.getElementById('product-grid');
+    if (!grid) return;
+
+    grid.innerHTML = products.map(p => createProductCard(p)).join('');
+}
+
+// ✅ ترتيب المنتجات
+function sortHomePageProducts() {
+    const sortBy = document.getElementById('sort').value;
+    let products = Object.values(getAllProducts());
+
+    if (sortBy === 'price-low')
+        products.sort((a, b) => a.price - b.price);
+    else if (sortBy === 'price-high')
+        products.sort((a, b) => b.price - a.price);
+    else if (sortBy === 'rating')
+        products.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+    renderProductGrid(products);
+}
+
+// ✅ فلترة المنتجات (تم إصلاح مشكلة event)
+window.filterProducts = function (category, event) {
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    if (event) event.target.classList.add('active');
+
+    let products = Object.values(getAllProducts());
+    if (category !== 'all') {
+        products = products.filter(p => p.category === category);
+    }
+
+    renderProductGrid(products);
+};
+
+// ✅ إضافة للسلة باستخدام ID فقط (أكثر أمانًا)
+function addToCartById(id) {
+    const products = Object.values(getAllProducts());
+    const product = products.find(p => p.id === id);
+    if (product) {
+        addToCart(product);
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد الطلب - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 5rem auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            text-align: center;
+        }
+
+        .confirmation-container h1 {
+            font-family: 'Orbitron', monospace;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            font-size: 2.5rem;
+        }
+
+        .confirmation-container .success-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .order-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: right;
+        }
+
+        .order-details h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .info-label {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .next-steps {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(9, 9, 121, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .next-steps h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .next-steps ul {
+            text-align: right;
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        .next-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(45deg, #00d4ff, #090979);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(45deg, #090979, #00d4ff);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .confirmation-container {
+                margin: 2rem;
+                padding: 2rem;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+        <div class="header-search">
+            <form action="products.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <nav class="nav-menu">
+            <a href="../index.html">🏠 الرئيسية</a>
+            <a href="products.html">📦 المنتجات</a>
+            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
+            <a href="orders.html">📋 الطلبات</a>
+            <a href="wishlist.html">❤️ المفضلة</a>
+        </nav>
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link">
+                <div id="nav-cart-count-container" class="nav-cart-count-container">
+                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
+                    <span class="nav-cart-icon">🛒</span>
+                </div>
+                السلة
+            </a>
+        </div>
+    </header>
+
+    <div class="confirmation-container">
+        <div class="success-icon">🎉</div>
+        <h1>تم تأكيد طلبك!</h1>
+        <p style="color: #b0b0b0; font-size: 1.1rem; margin-bottom: 2rem;">
+            شكراً لتسوقك معنا. تم استلام طلبك بنجاح وهو قيد المراجعة.
+        </p>
+
+        <div class="order-details">
+            <h3>📋 تفاصيل الطلب</h3>
+            <div class="order-info">
+                <div class="info-item">
+                    <div class="info-label">رقم الطلب</div>
+                    <div class="info-value" id="order-id">#000000</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">تاريخ الطلب</div>
+                    <div class="info-value" id="order-date">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">حالة الطلب</div>
+                    <div class="info-value" style="color: #00d4ff;">قيد المراجعة</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">المبلغ الإجمالي</div>
+                    <div class="info-value" id="order-total">0 جنيه مصري</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>🚀 الخطوات التالية</h3>
+            <ul>
+                <li>✅ تم إرسال تفاصيل طلبك إلى فريقنا</li>
+                <li>⏳ سيتم مراجعة طلبك خلال 24 ساعة</li>
+                <li>📞 سيتم التواصل معك لتأكيد التفاصيل</li>
+                <li>🚚 سيتم شحن الطلب بعد تأكيد الدفع</li>
+                <li>📧 يمكنك متابعة حالة طلبك من قسم "الطلبات"</li>
+            </ul>
+        </div>
+
+        <div class="action-buttons">
+            <a href="../index.html" class="action-btn primary">
+                العودة للتسوق
+            </a>
+            <a href="orders.html" class="action-btn secondary">
+                متابعة الطلبات
+            </a>
+            <a href="cart.html" class="action-btn secondary">
+                عرض السلة
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api-integration.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // تحميل تفاصيل الطلب الأخير
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            const sentOrders = JSON.parse(localStorage.getItem('sentOrders') || '[]');
+
+            if (sentOrders.length > 0) {
+                const lastOrder = sentOrders[sentOrders.length - 1];
+
+                document.getElementById('order-id').textContent = '#' + lastOrder.orderId;
+                document.getElementById('order-date').textContent = new Date(lastOrder.timestamp).toLocaleDateString('ar-SA');
+                document.getElementById('order-total').textContent = lastOrder.total + ' جنيه مصري';
+            } else {
+                // إذا لم يكن هناك طلبات، إنشاء رقم طلب عشوائي
+                document.getElementById('order-id').textContent = '#' + String(Date.now()).slice(-6);
+                document.getElementById('order-date').textContent = new Date().toLocaleDateString('ar-SA');
+            }
+        });
+    </script>
+</body>
+</html>

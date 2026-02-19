@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الطلبات - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #120729 100%);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .orders-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .orders-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: #00d4ff;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.7rem 1.5rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #b0b0b0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #000;
+            border-color: #00d4ff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4ff;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            margin-top: 0.5rem;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        }
+
+        .order-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #b0b0b0;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .order-id {
+            color: #00d4ff;
+        }
+
+        .order-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .status-badge {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-confirmed {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .status-delivered {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .customer-info {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .customer-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .customer-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-line {
+            display: flex;
+            align-items: start;
+            gap: 0.8rem;
+        }
+
+        .detail-line i {
+            color: #00d4ff;
+            margin-top: 0.2rem;
+            min-width: 20px;
+        }
+
+        .detail-line span {
+            color: #b0b0b0;
+        }
+
+        .products-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .products-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table thead {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .products-table th {
+            padding: 1rem;
+            text-align: right;
+            color: #00d4ff;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .products-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        .products-table tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .product-name {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .price-cell {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .order-footer {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .order-total {
+            text-align: right;
+        }
+
+        .total-label {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+
+        .total-amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-delivered {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+        }
+
+        .btn-delivered:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-cancel {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #b0b0b0;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: rgba(0, 212, 255, 0.3);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 95%;
+        }
+
+        .modal-header {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #b0b0b0;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-confirm-action {
+            background: #4caf50;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-cancel-action {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .orders-container {
+                padding: 1rem;
+            }
+
+            .order-header {
+                grid-template-columns: 1fr;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .order-footer {
+                grid-template-columns: 1fr;
+                text-align: right;
+            }
+
+            .action-buttons {
+                justify-content: flex-end;
+            }
+
+            .products-table {
+                font-size: 0.9rem;
+            }
+
+            .products-table th,
+            .products-table td {
+                padding: 0.8rem 0.5rem;
+            }
+
+            .product-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .filter-tabs {
+                flex-direction: column;
+            }
+
+            .filter-tab {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1 class="orders-title">📦 إدارة الطلبات</h1>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterOrders('all')">جميع الطلبات</button>
+            <button class="filter-tab" onclick="filterOrders('pending')">
+                <i class="fas fa-hourglass-start"></i> قيد المراجعة
+            </button>
+            <button class="filter-tab" onclick="filterOrders('confirmed')">
+                <i class="fas fa-check-circle"></i> مؤكّدة
+            </button>
+            <button class="filter-tab" onclick="filterOrders('delivered')">
+                <i class="fas fa-truck"></i> تم التوصيل
+            </button>
+            <button class="filter-tab" onclick="filterOrders('cancelled_by_customer')">
+                <i class="fas fa-user-slash"></i> ملغاة من العميل
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number" id="totalOrders">0</span>
+                <div class="stat-label">إجمالي الطلبات</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="pendingOrders">0</span>
+                <div class="stat-label">قيد المراجعة</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="confirmedOrders">0</span>
+                <div class="stat-label">مؤكّدة</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="deliveredOrders">0</span>
+                <div class="stat-label">تم التوصيل</div>
+            </div>
+        </div>
+
+        <div class="orders-list" id="ordersList"></div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-inbox"></i>
+            <p>لا توجد طلبات حالياً</p>
+        </div>
+    </div>
+
+    <!-- Modal للتأكيد من تغيير الحالة -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>تأكيد</span>
+                <button class="close-btn" onclick="closeModal('confirmModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="modalMessage"></div>
+            <div class="modal-actions">
+                <button class="btn btn-confirm-action" onclick="confirmStatusChangeAction()">
+                    تأكيد
+                </button>
+                <button class="btn btn-cancel-action" onclick="closeModal('confirmModal')">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class OrdersManager {
+            constructor() {
+                this.orders = [];
+                this.filteredOrders = [];
+                this.currentFilter = 'all';
+                this.statusChangeData = null;
+                this.init();
+            }
+
+            init() {
+                this.checkAuth();
+                this.loadOrders();
+                this.updateStats();
+                this.render();
+            }
+
+            checkAuth() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                    window.location.href = '../pages/login.html';
+                }
+            }
+
+            loadOrders() {
+                const userEmail = localStorage.getItem('userEmail');
+                const sellerOrders = JSON.parse(localStorage.getItem('seller_orders') || '[]');
+                
+                // تصفية الطلبات الخاصة بهذا البائع
+                this.orders = sellerOrders
+                    .filter(order => order.sellerEmail === userEmail)
+                    .map((order, index) => {
+                        // تأكد من وجود uniqueKey دائماً
+                        if (!order.id) {
+                            order.id = `seller_${order.orderId}_${order.sellerEmail}`;
+                        }
+                        // إضافة uniqueKey كمعرف فريد
+                        order.uniqueKey = order.id + '_' + index;
+                        return order;
+                    });
+                this.filteredOrders = [...this.orders];
+                console.log('Loaded orders with uniqueKeys:', this.orders.map(o => ({ id: o.id, uniqueKey: o.uniqueKey, orderId: o.orderId, status: o.status })));
+            }
+
+            updateStats() {
+                const total = this.orders.length;
+                const pending = this.orders.filter(o => o.status === 'pending').length;
+                const confirmed = this.orders.filter(o => o.status === 'confirmed').length;
+                const delivered = this.orders.filter(o => o.status === 'delivered').length;
+
+                document.getElementById('totalOrders').textContent = total;
+                document.getElementById('pendingOrders').textContent = pending;
+                document.getElementById('confirmedOrders').textContent = confirmed;
+                document.getElementById('deliveredOrders').textContent = delivered;
+            }
+
+            filterByStatus(status) {
+                if (status === 'all') {
+                    this.filteredOrders = [...this.orders];
+                } else {
+                    this.filteredOrders = this.orders.filter(o => o.status === status);
+                }
+                this.render();
+            }
+
+            render() {
+                const ordersList = document.getElementById('ordersList');
+                const emptyState = document.getElementById('emptyState');
+
+                if (this.filteredOrders.length === 0) {
+                    ordersList.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                ordersList.innerHTML = this.filteredOrders.map(order => this.renderOrder(order)).join('');
+                
+                // إضافة event listeners للأزرار
+                const buttons = document.querySelectorAll('.btn-confirm, .btn-delivered, .btn-cancel');
+                console.log('Found buttons:', buttons.length);
+                
+                buttons.forEach((button, index) => {
+                    button.addEventListener('click', (e) => {
+                        const btnElement = e.target.closest('button');
+                        const uniqueKey = btnElement.dataset.uniqueKey;
+                        const orderId = btnElement.dataset.orderId;
+                        const status = btnElement.dataset.status;
+                        const action = btnElement.dataset.action;
+                        console.log(`Button ${index} clicked:`, { uniqueKey, orderId, status, action });
+                        confirmStatusChange(uniqueKey, orderId, status, action);
+                    });
+                });
+            }
+
+            renderOrder(order) {
+                const statusBadges = {
+                    pending: { icon: 'fa-hourglass-start', label: 'قيد المراجعة', class: 'status-pending' },
+                    confirmed: { icon: 'fa-check-circle', label: 'مؤكّدة', class: 'status-confirmed' },
+                    delivered: { icon: 'fa-truck', label: 'تم التوصيل', class: 'status-delivered' },
+                    cancelled: { icon: 'fa-times-circle', label: 'ملغاة', class: 'status-cancelled' },
+                    cancelled_by_customer: { icon: 'fa-user-slash', label: 'ملغاة من قبل المستخدم', class: 'status-cancelled' }
+                };
+
+                const badge = statusBadges[order.status] || statusBadges.pending;
+
+                const productsRows = (order.items || []).map(item => `
+                    <tr>
+                        <td>
+                            <div class="product-name">
+                                ${item.image ? `<img src="${item.image}" alt="${item.name}" class="product-image">` : ''}
+                                <span>${item.name || item.productName}</span>
+                            </div>
+                        </td>
+                        <td>${item.category}</td>
+                        <td>${item.quantity || item.qty || 1}</td>
+                        <td class="price-cell">${parseFloat(item.price || 0).toFixed(2)} ر.س</td>
+                        <td class="price-cell">${(parseFloat(item.price || 0) * (item.quantity || item.qty || 1)).toFixed(2)} ر.س</td>
+                    </tr>
+                `).join('');
+
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span class="info-label">رقم الطلب</span>
+                                    <span class="info-value order-id">#${order.orderId}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">تاريخ الطلب</span>
+                                    <span class="info-value">${new Date(order.createdAt).toLocaleDateString('ar-SA')}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">الوقت</span>
+                                    <span class="info-value">${new Date(order.createdAt).toLocaleTimeString('ar-SA')}</span>
+                                </div>
+                            </div>
+                            <div class="order-status">
+                                <div class="status-badge ${badge.class}">
+                                    <i class="fas ${badge.icon}"></i>
+                                    ${badge.label}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="customer-info">
+                            <div class="customer-header">
+                                <i class="fas fa-user-circle"></i>
+                                بيانات العميل
+                            </div>
+                            <div class="customer-details">
+                                <div class="detail-line">
+                                    <i class="fas fa-user"></i>
+                                    <span><strong>الاسم:</strong> ${order.customerName}</span>
+                                </div>
+                                <div class="detail-line">
+                                    <i class="fas fa-phone"></i>
+                                    <span><strong>الهاتف:</strong> ${order.customerPhone || 'لم يتم إدخاله'}</span>
+                                </div>
+                                <div class="detail-line">
+                                    <i class="fas fa-envelope"></i>
+                                    <span><strong>البريد:</strong> ${order.customerEmail}</span>
+                                </div>
+                                <div class="detail-line">
+                                    <i class="fas fa-city"></i>
+                                    <span><strong>المدينة:</strong> ${order.city || 'لم يتم إدخالها'}</span>
+                                </div>
+                                <div class="detail-line" style="grid-column: 1/-1;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span><strong>العنوان:</strong> ${order.address}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="products-section">
+                            <div class="products-title">
+                                <i class="fas fa-receipt"></i>
+                                ملخص الفاتورة
+                            </div>
+                            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 10px; padding: 1.5rem;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #b0b0b0;">المجموع الفرعي:</span>
+                                        <span style="color: #e0e0e0; font-weight: 600; font-size: 1.1rem;">${parseFloat(order.subtotal || 0).toFixed(2)} ر.س</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #b0b0b0;">الضريبة (5%):</span>
+                                        <span style="color: #2196f3; font-weight: 600; font-size: 1.1rem;">${parseFloat(order.tax || 0).toFixed(2)} ر.س</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #b0b0b0;">رسوم الشحن:</span>
+                                        <span style="color: #4caf50; font-weight: 600; font-size: 1.1rem;">${parseFloat(order.shippingCost || 0).toFixed(2)} ر.س</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px; grid-column: 1/-1;">
+                                        <span style="color: #e0e0e0; font-weight: 600; font-size: 1.1rem;">الإجمالي:</span>
+                                        <span style="color: #00d4ff; font-weight: 700; font-size: 1.3rem;">${parseFloat(order.total).toFixed(2)} ر.س</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right; font-size: 0.9rem; color: #b0b0b0;">
+                                    <i class="fas fa-truck"></i>
+                                    <strong>طريقة الشحن:</strong> ${order.shippingMethod || 'لم يتم تحديدها'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="products-section">
+                            <div class="products-title">
+                                <i class="fas fa-box"></i>
+                                المنتجات المطلوبة (${order.items ? order.items.length : 0})
+                            </div>
+                            <table class="products-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المنتج</th>
+                                        <th>القسم</th>
+                                        <th>الكمية</th>
+                                        <th>السعر</th>
+                                        <th>الإجمالي</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${productsRows}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="order-total">
+                                <div class="total-label">إجمالي الطلب:</div>
+                                <div class="total-amount">${parseFloat(order.total).toFixed(2)} ر.س</div>
+                            </div>
+                            <div class="action-buttons">
+                                ${order.status === 'pending' ? `
+                                    <button class="btn btn-confirm" data-unique-key="${order.uniqueKey}" data-order-id="${order.id}" data-status="confirmed" data-action="تأكيد الطلب">
+                                        <i class="fas fa-check"></i> تأكيد الطلب
+                                    </button>
+                                ` : ''}
+                                ${(order.status === 'pending' || order.status === 'confirmed') ? `
+                                    <button class="btn btn-delivered" data-unique-key="${order.uniqueKey}" data-order-id="${order.id}" data-status="delivered" data-action="تم التوصيل">
+                                        <i class="fas fa-truck"></i> تم التوصيل
+                                    </button>
+                                ` : ''}
+                                ${order.status === 'cancelled_by_customer' ? `
+                                    <div style="padding: 1rem; background: rgba(244, 67, 54, 0.2); border: 1px solid rgba(244, 67, 54, 0.3); border-radius: 8px; color: #f44336; text-align: center; font-weight: 600;">
+                                        <i class="fas fa-info-circle"></i> تم إلغاء هذا الطلب من قبل المستخدم
+                                    </div>
+                                ` : ''}
+                                ${order.status !== 'cancelled_by_customer' && order.status !== 'cancelled' && order.status !== 'delivered' ? `
+                                    <button class="btn btn-cancel" data-unique-key="${order.uniqueKey}" data-order-id="${order.id}" data-status="cancelled" data-action="إلغاء الطلب">
+                                        <i class="fas fa-times"></i> إلغاء
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            changeStatus(uniqueKey, newStatus) {
+                console.log('changeStatus called:', { uniqueKey, newStatus });
+                console.log('Available orders:', this.orders.map(o => ({ id: o.id, uniqueKey: o.uniqueKey, orderId: o.orderId, status: o.status })));
+                
+                // البحث عن الطلب باستخدام uniqueKey
+                let order = this.orders.find(o => o.uniqueKey === uniqueKey);
+                
+                console.log('Found order:', order);
+                
+                if (order) {
+                    order.status = newStatus;
+                    order.updatedAt = new Date().toISOString();
+                    console.log('Updated order status to:', newStatus);
+                    this.saveOrders();
+                    
+                    const statusLabel = {
+                        pending: 'قيد المراجعة',
+                        confirmed: 'مؤكّد',
+                        delivered: 'تم التوصيل',
+                        cancelled: 'ملغى'
+                    };
+                    this.showNotification(`تم تحديث الطلب إلى: ${statusLabel[newStatus]} ✓`);
+                    
+                    // إعادة تحميل الصفحة بعد 1 ثانية لقراءة البيانات الجديدة
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    console.error('Order not found with uniqueKey:', uniqueKey);
+                    console.log('All orders:', this.orders);
+                    this.showNotification('❌ حدث خطأ: لم يتم العثور على الطلب', true);
+                }
+            }
+
+            saveOrders() {
+                const sellerOrders = JSON.parse(localStorage.getItem('seller_orders') || '[]');
+                const allCustomerOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+                const userEmail = localStorage.getItem('userEmail');
+                
+                console.log('Saving orders for seller:', userEmail);
+                console.log('Orders to save:', this.orders.map(o => ({ id: o.id, orderId: o.orderId, status: o.status })));
+                
+                // تحديث الطلبات - ابحث عن كل طلب بـ ID أو orderId
+                let updatedSellerOrders = [];
+                sellerOrders.forEach(order => {
+                    let localOrder = this.orders.find(o => o.id === order.id);
+                    
+                    // إذا لم نجد بـ ID، جرب البحث برقم الطلب
+                    if (!localOrder) {
+                        localOrder = this.orders.find(o => o.orderId === order.orderId && o.sellerEmail === order.sellerEmail);
+                    }
+                    
+                    if (localOrder) {
+                        console.log('Updating order:', localOrder.id || localOrder.orderId);
+                        updatedSellerOrders.push({ ...order, ...localOrder });
+                    } else {
+                        updatedSellerOrders.push(order);
+                    }
+                });
+
+                // تحديث seller_orders
+                localStorage.setItem('seller_orders', JSON.stringify(updatedSellerOrders));
+                
+                // تحديث orders (طلبات العميل) أيضاً بنفس الحالة الجديدة
+                let updatedCustomerOrders = allCustomerOrders.map(customerOrder => {
+                    const updatedSellerOrder = updatedSellerOrders.find(o => o.orderId === customerOrder.orderId);
+                    if (updatedSellerOrder) {
+                        // نسخ الحالة الجديدة من seller_orders إلى orders
+                        return { ...customerOrder, status: updatedSellerOrder.status };
+                    }
+                    return customerOrder;
+                });
+                
+                localStorage.setItem('orders', JSON.stringify(updatedCustomerOrders));
+                console.log('Orders saved successfully in both seller_orders and orders');
+            }
+
+            showNotification(message, isError = false) {
+                const notification = document.createElement('div');
+                const bgColor = isError ? 'rgba(244, 67, 54, 0.2)' : 'rgba(76, 175, 80, 0.2)';
+                const borderColor = isError ? 'rgba(244, 67, 54, 0.5)' : 'rgba(76, 175, 80, 0.5)';
+                const textColor = isError ? '#f44336' : '#4caf50';
+                
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${bgColor};
+                    border: 1px solid ${borderColor};
+                    color: ${textColor};
+                    padding: 1rem 1.5rem;
+                    border-radius: 10px;
+                    z-index: 2000;
+                    animation: slideIn 0.3s ease;
+                    font-weight: 600;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize
+        const manager = new OrdersManager();
+
+        // Global functions
+        function filterOrders(status) {
+            manager.currentFilter = status;
+            manager.filterByStatus(status);
+
+            // Update tab styling
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        let pendingStatusChange = null;
+
+        function confirmStatusChange(uniqueKey, orderId, newStatus, action) {
+            console.log('=== confirmStatusChange ===');
+            console.log('Received::', { uniqueKey, orderId, newStatus, action });
+            console.log('Manager orders:', manager.orders.map(o => ({ id: o.id, uniqueKey: o.uniqueKey, orderId: o.orderId })));
+            
+            if (!uniqueKey || uniqueKey === 'undefined' || uniqueKey === '') {
+                console.error('Invalid uniqueKey:', uniqueKey);
+                alert('خطأ: معرف الطلب غير صحيح. حاول تحديث الصفحة');
+                return;
+            }
+            
+            pendingStatusChange = { uniqueKey, newStatus };
+            document.getElementById('modalMessage').innerHTML = `
+                <p style="color: #b0b0b0; font-size: 1.1rem;">
+                    هل تريد تأكيد <strong style="color: #00d4ff;">${action}</strong>؟
+                </p>
+            `;
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        function confirmStatusChangeAction() {
+            console.log('=== confirmStatusChangeAction ===');
+            console.log('pendingStatusChange:', pendingStatusChange);
+            
+            if (pendingStatusChange) {
+                console.log('Proceeding with status change');
+                manager.changeStatus(pendingStatusChange.uniqueKey, pendingStatusChange.newStatus);
+                pendingStatusChange = null;
+                closeModal('confirmModal');
+            } else {
+                console.warn('No pending status change');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // تهيئة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            const confirmBtn = document.querySelector('.btn-confirm-action');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', confirmStatusChangeAction);
+            }
+        });
+    </script>
+</body>
+</html>

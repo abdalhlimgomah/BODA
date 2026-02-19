@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المفضلة - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        .wishlist-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .wishlist-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .wishlist-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .wishlist-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .wishlist-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wishlist-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-8px);
+        }
+
+        .wishlist-item-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(9, 9, 121, 0.1));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .wishlist-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wishlist-item-name {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .wishlist-item-price {
+            color: #00d4ff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .wishlist-item-rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .wishlist-item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-add-cart {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            color: white;
+        }
+
+        .btn-add-cart:hover {
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-remove {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 107, 107, 0.4);
+        }
+
+        .wishlist-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+        }
+
+        .sidebar-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .sidebar-title {
+            font-family: 'Orbitron', monospace;
+            color: #00d4ff;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .sidebar-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-count {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .empty-wishlist {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-text {
+            color: #b0b0b0;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .empty-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #00d4ff, #090979);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .empty-btn:hover {
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .heart-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .heart-icon.active {
+            color: #ff6b6b;
+            animation: heartbeat 0.6s ease;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .wishlist-content {
+                grid-template-columns: 1fr;
+            }
+
+            .wishlist-items {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .wishlist-header {
+                font-size: 2rem;
+            }
+
+            .wishlist-sidebar {
+                grid-column: 1/-1;
+            }
+        }
+        .my-0 {
+                    text-decoration: none;
+    color: #e0e0e0;
+    font-weight: 500;
+    margin-left: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+        <div class="header-search">
+            <form action="products.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <nav class="nav-menu">
+            <a href="../index.html">🏠 الرئيسية</a>
+            <a href="products.html">📦 المنتجات</a>
+            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
+            <a href="orders.html">📋 الطلبات</a>
+            <a href="wishlist.html">❤️ المفضلة</a>
+        </nav>
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link">
+                <div id="nav-cart-count-container" class="nav-cart-count-container">
+                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
+                    <span class="nav-cart-icon">🛒</span>
+                </div>
+                السلة
+            </a>
+        </div>
+    </header>
+
+    <div class="wishlist-container">
+        <h1 class="wishlist-header">❤️ المفضلة الخاصة بي</h1>
+
+        <div class="wishlist-content">
+            <div class="wishlist-items" id="wishlist-items">
+                <!-- سيتم ملء المفضلات هنا -->
+            </div>
+
+            <div class="wishlist-sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">📊 الإحصائيات</div>
+                    <div class="sidebar-item">
+                        <span>عدد المفضلات:</span>
+                        <span class="sidebar-count" id="wishlist-count">0</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <span>السعر الإجمالي:</span>
+                        <span class="sidebar-count" id="wishlist-total">0 جنيه مصري</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-title">💡 نصائح</div>
+                    <div style="color: #b0b0b0; font-size: 0.9rem; line-height: 1.6;">
+                        • أضف المنتجات المفضلة
+                        <br><br>
+                        • تابع الأسعار وخصصها لاحقاً
+                        <br><br>
+                        • شارك المفضلة مع الأصدقاء
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-title">🎯 الإجراءات</div>
+                    <button class="action-btn" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; width: 100%;" onclick="addAllToCart()">
+                        أضف الكل للعربة
+                    </button>
+                    <button class="action-btn" style="background: rgba(255, 107, 107, 0.2); color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.4); width: 100%; margin-top: 0.5rem;" onclick="clearWishlist()">
+                        مسح الكل
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BODA. جميع الحقوق محفوظة.</p>
+        <div class="footer-links">
+            <a href="about.html">عن المتجر</a>
+            <a href="contact.html">اتصل بنا</a>
+            <a href="privacy.html">سياسة الخصوصية</a>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api-integration.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        function renderWishlist() {
+            const wishlist = getWishlist();
+            const container = document.getElementById('wishlist-items');
+            
+            if (wishlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-wishlist">
+                        <div class="empty-icon">💔</div>
+                        <div class="empty-text">قائمة المفضلة فارغة</div>
+                        <button class="empty-btn" onclick="window.location.href='../index.html'">
+                            ابدأ التسوق الآن
+                        </button>
+                    </div>
+                `;
+                updateWishlistStats();
+                return;
+            }
+
+            container.innerHTML = wishlist.map(item => {
+                return `
+                <div class="wishlist-item" onclick="viewProduct('${item.id}')">
+                    <div class="wishlist-item-image">
+                        <img src="${getImagePath(item.image)}" alt="${item.name}" loading="lazy">
+                    </div>
+                    <div class="wishlist-item-content">
+                        <div class="wishlist-item-name">${item.name}</div>
+                        <div class="wishlist-item-price">${item.price} جنيه مصري</div>
+                        ${item.rating > 0 ? `
+                        <div class="wishlist-item-rating">
+                            ${renderStars(item.rating)}
+                            <span style="color: #b0b0b0;">(${item.rating})</span>
+                        </div>
+                        ` : ''}
+                        <div class="wishlist-item-actions">
+                            <button class="action-btn btn-add-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                                أضف للعربة
+                            </button>
+                            <button class="action-btn btn-remove" onclick="event.stopPropagation(); toggleWishlist('${item.id}')">
+                                ❌ إزالة من المفضلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;}).join('');
+
+            updateWishlistStats();
+        }
+
+        function updateWishlistStats() {
+            const wishlist = getWishlist();
+            const count = wishlist.length;
+            const total = wishlist.reduce((sum, item) => sum + (item.price || 0), 0);
+            
+            document.getElementById('wishlist-count').textContent = count;
+            document.getElementById('wishlist-total').textContent = total.toLocaleString('ar-SA') + ' جنيه مصري';
+        }
+
+        function addAllToCart() {
+            const wishlist = getWishlist();
+            if (wishlist.length === 0) {
+                showNotification('قائمة المفضلة فارغة', 'warning');
+                return;
+            }
+            
+            wishlist.forEach(item => {
+                addToCart(item);
+            });
+            
+            showNotification('تمت إضافة جميع المفضلات إلى العربة! ✓', 'success');
+        }
+
+        function clearWishlist() {
+            const wishlist = getWishlist();
+            if (wishlist.length === 0) {
+                showNotification('قائمة المفضلة فارغة بالفعل', 'warning');
+                return;
+            }
+            
+            if (confirm('هل أنت متأكد من مسح جميع المفضلات؟')) {
+                saveWishlist([]);
+                renderWishlist();
+                showNotification('تم مسح جميع المفضلات', 'info');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderWishlist();
+        });
+    </script>
+</body>
+</html>

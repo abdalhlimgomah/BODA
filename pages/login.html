@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1b1b20">
+    <title>تسجيل الدخول - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .login-container h2 {
+            font-family: 'Orbitron', monospace;
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-container input[type="email"],
+        .login-container input[type="password"],
+        .login-container input[type="tel"] {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            min-height: 44px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input[type="email"] {
+            inputmode: email;
+        }
+
+        .login-container input[type="tel"] {
+            inputmode: tel;
+        }
+
+        .login-container input::placeholder {
+            color: #b0b0b0;
+        }
+
+        .login-container input:focus {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 1rem;
+            min-height: 48px;
+            background: linear-gradient(45deg, #00d4ff, #090979);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .login-container button:active {
+            transform: scale(0.98);
+        }
+
+        .login-container p {
+            margin-top: 1.5rem;
+            color: #b0b0b0;
+        }
+
+        .auth-message {
+            margin-bottom: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .auth-message.success {
+            display: block;
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.35);
+        }
+
+        .auth-message.error {
+            display: block;
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.35);
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.2rem 0;
+            color: #b0b0b0;
+            font-size: 0.85rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            min-height: 48px;
+            background: #ffffff;
+            color: #1b1b20;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .google-btn:active {
+            transform: scale(0.98);
+        }
+
+        .login-container a {
+            color: #00d4ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-container a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 1rem;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+
+            .login-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .login-container input,
+            .login-container button {
+                padding: 0.75rem;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
+            <div class="logo">🛍️ BODA</div>
+        </div>
+        <div class="header-search">
+            <form action="products.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <nav class="nav-menu">
+            <a href="../index.html">🏠 الرئيسية</a>
+            <a href="products.html">📦 المنتجات</a>
+            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
+            <a href="orders.html">📋 الطلبات</a>
+            <a href="wishlist.html">❤️ المفضلة</a>
+        </nav>
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link">
+                <div id="nav-cart-count-container" class="nav-cart-count-container">
+                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
+                    <span class="nav-cart-icon">🛒</span>
+                </div>
+                السلة
+            </a>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <h2>تسجيل الدخول</h2>
+        <div id="auth-message" class="auth-message" role="status" aria-live="polite"></div>
+        <form id="login">
+            <div class="form-group">
+                <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="كلمة المرور" required>
+            </div>
+            <button type="submit">دخول</button>
+        </form>
+        <div class="auth-divider">أو</div>
+        <button type="button" class="google-btn" id="google-login-btn">
+            <i class="fa-brands fa-google"></i>
+            المتابعة باستخدام Google
+        </button>
+        <div style="margin-top: 1rem;">
+            <a href="forgot-password.html" style="font-size: 0.9rem; color: #b0b0b0;">نسيت كلمة المرور؟</a>
+        </div>
+        <a href="register.html" style="display: block; margin-top: 1rem; font-weight: bold;">إنشاء حساب جديد</a>
+    </div>
+
+    <!-- Mock API for offline support -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/mock-api.js"></script>
+    <!-- API Integration -->
+    <script src="../js/api-integration.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/login.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+</body>
+</html>

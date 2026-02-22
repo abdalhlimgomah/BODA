@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل شريك جديد - BODA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9fa 100%);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #06b6d4;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.3rem;
+        }
+
+        .alert {
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .alert-info {
+            background: rgba(3, 102, 214, 0.1);
+            border-left: 4px solid #0366d6;
+            color: #0366d6;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            color: #d97706;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: white;
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            gap: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-message.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* صفحة النجاح */
+        .success-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            padding: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 1.5rem;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-card h1 {
+            font-size: 2rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .success-details {
+            background: rgba(6, 182, 212, 0.05);
+            border: 2px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: right;
+        }
+
+        .success-details p {
+            color: #1e293b;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .success-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-details strong {
+            color: #06b6d4;
+            font-weight: 700;
+        }
+
+        .merchant-info {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .merchant-info h3 {
+            color: #0f172a;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .merchant-id-display {
+            background: white;
+            border: 2px dashed #06b6d4;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #0f172a;
+            word-break: break-all;
+            letter-spacing: 1px;
+        }
+
+        .success-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .success-note i {
+            color: #f59e0b;
+        }
+
+        .merchant-id {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(2, 132, 199, 0.1));
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            color: #0f172a;
+            word-break: break-all;
+        }
+
+        .terms-link {
+            color: #06b6d4;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- رأس الصفحة -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-store"></i>
+                تسجيل شريك جديد
+            </h1>
+            <p>انضم إلى منصة BODA وابدأ بيع منتجاتك الآن</p>
+        </div>
+
+        <!-- رسالة النجاح -->
+        <div class="success-message" id="successMessage" style="display: none;">
+            <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+            <div>
+                <strong>تم التسجيل بنجاح!</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">سيتم مراجعة طلبك من قبل الفريق الإداري</p>
+            </div>
+        </div>
+
+        <!-- صفحة تأكيد النجاح -->
+        <div class="success-page" id="successPage" style="display: none;">
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>تم إرسال الطلب بنجاح!</h1>
+                <p class="success-subtitle">شكراً لك على الاهتمام بالانضمام إلى BODA</p>
+                
+                <div class="success-details">
+                    <p>سيتم مراجعة طلب الشراكة الخاص بك على مدار <strong>24 ساعة</strong></p>
+                    <p>ستتلقى بريد إلكتروني برقم معرّف الشريك وحالة الطلب</p>
+                </div>
+
+                <div class="merchant-info">
+                    <h3>معرف الشريك</h3>
+                    <div class="merchant-id-display" id="successMerchantId">MERCHANT_...</div>
+                </div>
+
+                <p class="success-note">
+                    <i class="fas fa-info-circle"></i>
+                    احفظ معرف الشريك الخاص بك للرجوع إليه لاحقاً
+                </p>
+
+                <button class="btn btn-primary" onclick="goToHome()">
+                    <i class="fas fa-home"></i>
+                    العودة للصفحة الرئيسية
+                </button>
+            </div>
+        </div>
+
+        <!-- نموذج التسجيل -->
+        <form class="form-card" id="partnerForm">
+            <!-- تنبيهات -->
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>معلومة مهمة:</strong> جميع الحقول المعلمة بـ <span class="required">*</span> إلزامية
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>الأمان أولاً:</strong> بيانات الاعتماد الخاصة بك محفوظة بشكل آمن وسري
+                </div>
+            </div>
+
+            <!-- القسم 1: معلومات المالك -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-user"></i>
+                    معلومات المالك / البائع
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم المالك <span class="required">*</span></label>
+                        <input type="text" id="ownerName" name="ownerName" required placeholder="مثال: محمد علي">
+                        <span class="helper-text">اسم المالك الحقيقي</span>
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني <span class="required">*</span></label>
+                        <input type="email" id="ownerEmail" name="ownerEmail" required placeholder="example@gmail.com">
+                        <span class="helper-text">سيكون هذا البريد الملتصق بجميع حساباتك</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الهاتف <span class="required">*</span></label>
+                        <input type="tel" id="ownerPhone" name="ownerPhone" required placeholder="+201012345678">
+                        <span class="helper-text">رقم هاتف صحيح للتواصل</span>
+                    </div>
+                    <div class="form-group">
+                        <label>الرقم القومي <span class="required">*</span></label>
+                        <input type="text" id="nationalId" name="nationalId" required placeholder="30001011234567" maxlength="14">
+                        <span class="helper-text">الرقم القومي المصري (14 رقم)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القسم 2: معلومات المتجر -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-shopping-bag"></i>
+                    معلومات المتجر / الشركة
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم المتجر / الشركة <span class="required">*</span></label>
+                        <input type="text" id="storeName" name="storeName" required placeholder="مثال: متجر الإلكترونيات الفاخرة">
+                        <span class="helper-text">الاسم التجاري</span>
+                    </div>
+                    <div class="form-group">
+                        <label>فئة المنتجات <span class="required">*</span></label>
+                        <select id="productCategory" name="productCategory" required>
+                            <option value="">اختر فئة المنتجات</option>
+                            <option value="electronics">الإلكترونيات</option>
+                            <option value="fashion">الملابس والموضة</option>
+                            <option value="home">الأثاث والديكور</option>
+                            <option value="beauty">الجمال والعناية</option>
+                            <option value="food">الغذاء والمشروبات</option>
+                            <option value="sports">الرياضة واللياقة</option>
+                            <option value="books">الكتب والتعليم</option>
+                            <option value="toys">الألعاب والمنتجات</option>
+                            <option value="automotive">السيارات والملحقات</option>
+                            <option value="other">فئات أخرى</option>
+                        </select>
+                        <span class="helper-text">اختر الفئة الرئيسية لمنتجاتك</span>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>وصف المتجر <span class="required">*</span></label>
+                        <textarea id="storeDescription" name="storeDescription" required placeholder="اكتب وصفاً عن متجرك، المنتجات التي توفرها، وما يميزك عن المنافسين..."></textarea>
+                        <span class="helper-text">اكتب وصفاً جذاباً يصل إلى 500 حرف</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القسم 3: معلومات الموقع -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    معلومات الموقع والعنوان
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>المحافظة <span class="required">*</span></label>
+                        <select id="goverate" name="goverate" required>
+                            <option value="">اختر المحافظة</option>
+                            <option value="cairo">القاهرة</option>
+                            <option value="giza">الجيزة</option>
+                            <option value="qalyubia">القليوبية</option>
+                            <option value="alexandria">الإسكندرية</option>
+                            <option value="beheira">البحيرة</option>
+                            <option value="kafr_el_sheikh">كفر الشيخ</option>
+                            <option value="damietta">دمياط</option>
+                            <option value="port_said">بور سعيد</option>
+                            <option value="ismailia">الإسماعيلية</option>
+                            <option value="suez">السويس</option>
+                            <option value="sharqia">الشرقية</option>
+                            <option value="monufia">المنوفية</option>
+                            <option value="dakahlia">الدقهلية</option>
+                            <option value="aswan">أسوان</option>
+                            <option value="luxor">الأقصر</option>
+                            <option value="sohag">سوهاج</option>
+                            <option value="qena">قنا</option>
+                            <option value="minya">المنيا</option>
+                            <option value="assiut">أسيوط</option>
+                            <option value="fayoum">الفيوم</option>
+                            <option value="beni_suef">بني سويف</option>
+                            <option value="matruh">مطروح</option>
+                            <option value="red_sea">البحر الأحمر</option>
+                            <option value="new_valley">الوادي الجديد</option>
+                            <option value="north_sinai">شمال سيناء</option>
+                            <option value="south_sinai">جنوب سيناء</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة <span class="required">*</span></label>
+                        <input type="text" id="city" name="city" required placeholder="مثال: مدينة نصر">
+                        <span class="helper-text">المدينة الرئيسية للعمل</span>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>العنوان <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" required placeholder="الشارع، المنطقة، الحي، البناية...">
+                        <span class="helper-text">عنوان المقر الرئيسي</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الرمز البريدي</label>
+                        <input type="text" id="postalCode" name="postalCode" placeholder="12345">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم هاتف المتجر <span class="required">*</span></label>
+                        <input type="tel" id="storePhone" name="storePhone" required placeholder="+201012345678">
+                        <span class="helper-text">رقم هاتف المتجر للتواصل</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القسم 4: معلومات الأعمال -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-file-contract"></i>
+                    معلومات التسجيل الحكومي
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم السجل التجاري <span class="required">*</span></label>
+                        <input type="text" id="commercialRegistry" name="commercialRegistry" required placeholder="1234567890">
+                        <span class="helper-text">رقم السجل التجاري أو رقم الرخصة</span>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع النشاط الاقتصادي <span class="required">*</span></label>
+                        <select id="businessType" name="businessType" required>
+                            <option value="">اختر نوع النشاط</option>
+                            <option value="individual">فرد (عامل حر)</option>
+                            <option value="partnership">شراكة</option>
+                            <option value="llc">شركة ذات مسؤولية محدودة</option>
+                            <option value="jointstock">شركة مساهمة</option>
+                            <option value="corporation">شركة مختلطة</option>
+                        </select>
+                        <span class="helper-text">نوع الشركة أو الصيغة القانونية</span>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>رقم التعريف الضريبي (VAT)</label>
+                        <input type="text" id="vatNumber" name="vatNumber" placeholder="300000000100003">
+                        <span class="helper-text">رقم التعريف الضريبي إن وجد</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القسم 5: معلومات البنك -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-university"></i>
+                    معلومات حساب البنك
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم البنك <span class="required">*</span></label>
+                        <select id="bankName" name="bankName" required>
+                            <option value="">اختر البنك</option>
+                            <option value="ahly">البنك الأهلي المصري</option>
+                            <option value="misr">بنك مصر</option>
+                            <option value="alex">بنك الإسكندرية</option>
+                            <option value="cairo">بنك القاهرة</option>
+                            <option value="odah">بنك عودة</option>
+                            <option value="arab_intl">البنك العربي الدولي</option>
+                            <option value="adib">بنك أبو ظبي الإسلامي</option>
+                            <option value="qnb">بنك قطر الوطني</option>
+                            <option value="gut">بنك الخليج التجاري</option>
+                            <option value="suez">بنك السويس</option>
+                            <option value="housing">البنك العقاري المصري</option>
+                            <option value="credit">بنك الإئتمان المصري</option>
+                            <option value="cib">البنك التجاري الدولي</option>
+                            <option value="faib">البنك الفرنسي المصري</option>
+                            <option value="other">بنك آخر</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع الحساب <span class="required">*</span></label>
+                        <select id="accountType" name="accountType" required>
+                            <option value="">اختر نوع الحساب</option>
+                            <option value="savings">حساب توفير</option>
+                            <option value="checking">حساب جاري</option>
+                            <option value="business">حساب تجاري</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>رقم الحساب البنكي <span class="required">*</span></label>
+                        <input type="text" id="bankAccount" name="bankAccount" required placeholder="1234567890">
+                        <span class="helper-text">رقم الحساب البنكي (بدون فراغات)</span>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>رقم IBAN <span class="required">*</span></label>
+                        <input type="text" id="iban" name="iban" required placeholder="EG1234567890123456789">
+                        <span class="helper-text">الرقم الدولي للحساب البنكي (IBAN) - يبدأ بـ EG</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم صاحب الحساب <span class="required">*</span></label>
+                        <input type="text" id="accountHolder" name="accountHolder" required placeholder="الاسم كما يظهر في البنك">
+                        <span class="helper-text">الاسم الأول والأخير لصاحب الحساب</span>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الحساب البديل</label>
+                        <input type="text" id="alternateAccount" name="alternateAccount" placeholder="رقم حساب بديل اختياري">
+                        <span class="helper-text">حساب بديل للتحويل (اختياري)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شروط وأحكام -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label style="flex-direction: row; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="acceptTerms" name="acceptTerms" required style="width: 1.2rem; height: 1.2rem; margin: 0; cursor: pointer;">
+                        <span>
+                            أوافق على
+                            <a href="pages/terms.html" class="terms-link" target="_blank">شروط الخدمة</a>
+                            و
+                            <a href="pages/privacy.html" class="terms-link" target="_blank">سياسة الخصوصية</a>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- أزرار الإجراء -->
+            <div class="button-group">
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i>
+                    إعادة تعيين
+                </button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <i class="fas fa-check"></i>
+                    تسجيل الآن
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // ========== معالج إرسال النموذج ==========
+        document.getElementById('partnerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            try {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spin fa-spinner"></i> جاري المعالجة...';
+
+                // إنشاء ID فريد للشريك (UUID)
+                const merchantId = 'MERCHANT_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+                // جمع البيانات
+                const formData = {
+                    // معرف فريد وتاريخ
+                    merchantId: merchantId,
+                    createdAt: new Date().toISOString(),
+                    status: 'pending', // قيد الانتظار
+                    
+                    // معلومات المالك
+                    owner: {
+                        name: document.getElementById('ownerName').value.trim(),
+                        email: document.getElementById('ownerEmail').value.trim().toLowerCase(),
+                        phone: document.getElementById('ownerPhone').value.trim(),
+                        nationalId: document.getElementById('nationalId').value.trim(),
+                    },
+                    
+                    // معلومات المتجر
+                    store: {
+                        name: document.getElementById('storeName').value.trim(),
+                        category: document.getElementById('productCategory').value,
+                        description: document.getElementById('storeDescription').value.trim(),
+                    },
+                    
+                    // معلومات الموقع
+                    location: {
+                        goverate: document.getElementById('goverate').value,
+                        city: document.getElementById('city').value.trim(),
+                        address: document.getElementById('address').value.trim(),
+                        postalCode: document.getElementById('postalCode').value.trim(),
+                        phone: document.getElementById('storePhone').value.trim(),
+                    },
+                    
+                    // معلومات الأعمال
+                    business: {
+                        commercialRegistry: document.getElementById('commercialRegistry').value.trim(),
+                        businessType: document.getElementById('businessType').value,
+                        vatNumber: document.getElementById('vatNumber').value.trim(),
+                    },
+                    
+                    // معلومات البنك
+                    bank: {
+                        name: document.getElementById('bankName').value,
+                        accountType: document.getElementById('accountType').value,
+                        accountNumber: document.getElementById('bankAccount').value.trim(),
+                        iban: document.getElementById('iban').value.trim().toUpperCase(),
+                        accountHolder: document.getElementById('accountHolder').value.trim(),
+                        alternateAccount: document.getElementById('alternateAccount').value.trim(),
+                    },
+                    
+                    // ملاحظات داخلية
+                    notes: '',
+                    flags: [], // لتعليم الطلبات المهمة
+                };
+
+                // حفظ في localStorage (مع التحقق من الأمان)
+                const existingMerchants = JSON.parse(localStorage.getItem('partner_registrations') || '[]');
+                // التحقق من عدم تسجيل نفس البريد مرتين
+                const emailExists = existingMerchants.some(p => p.owner.email === formData.owner.email);
+                if (emailExists) {
+                    throw new Error('هذا البريد الإلكتروني مسجل بالفعل');
+                }
+
+                existingMerchants.push(formData);
+                localStorage.setItem('partner_registrations', JSON.stringify(existingMerchants));
+
+                // إخفاء النموذج وإظهار صفحة النجاح
+                document.querySelector('.container').style.display = 'none';
+                document.getElementById('successPage').style.display = 'flex';
+                document.getElementById('successMerchantId').textContent = merchantId;
+
+                // حفظ معرف الشريك في localStorage للعودة إليه
+                localStorage.setItem('lastMerchantId', merchantId);
+                localStorage.setItem('lastMerchantEmail', formData.owner.email);
+
+            } catch (error) {
+                console.error('خطأ:', error);
+                alert('حدث خطأ: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> تسجيل الآن';
+            }
+        });
+
+        // ========== العودة للصفحة الرئيسية ==========
+        function goToHome() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

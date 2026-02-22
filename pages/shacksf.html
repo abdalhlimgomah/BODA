@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم إدارة المنتجات</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- الجانب الأيمن: بطاقة المالك -->
+        <aside class="sidebar">
+            <div class="owner-card">
+                <div class="profile-image-container">
+                    <img id="profileImage" src="https://via.placeholder.com/200?text=صورة+المالك" alt="صورة المالك">
+                    <label for="imageUpload" class="upload-btn" title="انقر لتحديث الصورة">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*" hidden>
+                </div>
+                <h2 id="ownerName" class="owner-name">المالك</h2>
+                <p id="ownerEmail" class="owner-email">وصف</p>
+            </div>
+
+            <!-- القائمة الرئيسية -->
+            <nav class="main-menu">
+                <ul class="menu-list">
+                    <li class="menu-item active">
+                        <a href="#dashboard" class="menu-link" data-section="dashboard">
+                            <i class="fas fa-chart-line"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="shack.html" class="menu-link">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>إضافة منتج</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="shacks.html" class="menu-link">
+                            <i class="fas fa-box"></i>
+                            <span>المنتجات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="shacksd.html" class="menu-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>الطلبات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#settings" class="menu-link" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <!-- رأس الصفحة -->
+            <header class="dashboard-header">
+                <h1>مرحباً بك في لوحة التحكم</h1>
+                <p class="header-subtitle">إدارة متجرك بسهولة وكفاءة</p>
+            </header>
+
+            <!-- الأقسام -->
+            <div class="content-sections">
+                <!-- قسم لوحة التحكم -->
+                <section id="dashboard" class="section active">
+                    <h2 class="section-title">لوحة التحكم</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon products-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>المنتجات</h3>
+                                <p id="productCount" class="stat-value">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orders-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>الطلبات</h3>
+                                <p id="orderCount" class="stat-value">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon sales-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>المبيعات</h3>
+                                <p id="salesAmount" class="stat-value">0 ج.م</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon revenue-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>الإيرادات</h3>
+                                <p id="revenueAmount" class="stat-value">0 ج.م</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- قسم الإعدادات -->
+                <section id="settings" class="section">
+                    <h2 class="section-title">الإعدادات</h2>
+                    <div class="settings-container">
+                        <!-- معلومات المتجر -->
+                        <div class="setting-item">
+                            <h3>معلومات المتجر</h3>
+                            <form id="settingsForm">
+                                <div class="form-group">
+                                    <label for="storeName">اسم المتجر</label>
+                                    <input type="text" id="storeName" placeholder="اسم متجرك">
+                                </div>
+                                <div class="form-group">
+                                    <label for="storeDescription">وصف المتجر</label>
+                                    <textarea id="storeDescription" placeholder="وصف متجرك" rows="4"></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i> حفظ الإعدادات
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- الوضع الليلي -->
+                        <div class="setting-item">
+                            <h3>الوضع الليلي</h3>
+                            <div class="theme-toggle-container">
+                                <label for="themeToggle" class="theme-toggle-label">
+                                    <input type="checkbox" id="themeToggle" class="theme-toggle">
+                                    <span class="toggle-slider"></span>
+                                    <span id="themeLabel">تفعيل الوضع الليلي</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- العملة -->
+                        <div class="setting-item">
+                            <h3>العملة</h3>
+                            <form id="currencyForm">
+                                <div class="form-group">
+                                    <label for="currencySelect">اختر العملة</label>
+                                    <select id="currencySelect" class="currency-select">
+                                        <option value="EGP">الجنيه المصري (ج.م)</option>
+                                        <option value="USD">الدولار الأمريكي ($)</option>
+                                        <option value="AED">الإمارات (د.إ)</option>>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i> حفظ العملة
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- الحساب والأمان -->
+                        <div class="setting-item">
+                            <h3>الحساب والأمان</h3>
+                            <button id="logoutBtn" class="logout-btn" style="width: 100%; margin-top: 1rem;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Log Out</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/dashboard-manager.js"></script>
+    <script>
+        // ========== التعامل مع البائع الجديد ==========
+        function initializeNewSeller() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sellerEmail = urlParams.get('seller');
+            const merchantId = urlParams.get('merchantId');
+
+            if (sellerEmail && merchantId) {
+                // حفظ البايع الحالي
+                localStorage.setItem('currentSellerEmail', sellerEmail);
+                localStorage.setItem('currentMerchantId', merchantId);
+
+                // إزالة parameters من ال URL للتنظيف
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // تحميل بيانات البائع الجديد
+                loadNewSellerData(sellerEmail, merchantId);
+
+                // عرض رسالة ترحيب
+                showWelcomeNotification(sellerEmail);
+            }
+        }
+
+        function loadNewSellerData(email, merchantId) {
+            try {
+                const seller = JSON.parse(localStorage.getItem(`seller_${email}`));
+                
+                if (seller) {
+                    // تحديث معلومات المالك
+                    document.getElementById('ownerName').textContent = seller.name;
+                    document.getElementById('ownerEmail').textContent = email;
+
+                    // تحديث معلومات المتجر في الإعدادات
+                    const storeNameInput = document.getElementById('storeName');
+                    if (storeNameInput) {
+                        storeNameInput.value = seller.storeName || '';
+                    }
+
+                    const storeDescInput = document.getElementById('storeDescription');
+                    if (storeDescInput) {
+                        storeDescInput.value = seller.storeDescription || '';
+                    }
+
+                    console.log('✓ تم تحميل بيانات البائع الجديد:', seller);
+                    console.log('✓ معرف الشريك:', merchantId);
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل بيانات البائع:', error);
+            }
+        }
+
+        function showWelcomeNotification(email) {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                padding: 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                max-width: 400px;
+                animation: slideInRight 0.3s ease;
+            `;
+
+            message.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <strong style="display: block; margin-bottom: 0.3rem;">مرحباً بك!</strong>
+                        <p style="margin: 0; font-size: 0.9rem;">تم تفعيل حسابك بنجاح</p>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                message.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => message.remove(), 300);
+            }, 4000);
+        }
+
+        // تحميل البايع الجديد عند فتح الصفحة
+        window.addEventListener('load', initializeNewSeller);
+    </script>

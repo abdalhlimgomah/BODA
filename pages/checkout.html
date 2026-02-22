@@ -421,35 +421,6 @@
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
-            <div class="logo">🛍️ BODA</div>
-        </div>
-        <div class="header-search">
-            <form action="products.html" method="GET" class="search-form">
-                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-        <nav class="nav-menu">
-            <a href="../index.html">🏠 الرئيسية</a>
-            <a href="products.html">📦 المنتجات</a>
-            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
-            <a href="orders.html">📋 الطلبات</a>
-            <a href="wishlist.html">❤️ المفضلة</a>
-        </nav>
-        <div class="header-actions">
-            <a href="cart.html" class="cart-link">
-                <div id="nav-cart-count-container" class="nav-cart-count-container">
-                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
-                    <span class="nav-cart-icon">🛒</span>
-                </div>
-                السلة
-            </a>
-        </div>
-    </header>
-
     <div class="stepper">
         <div class="step completed">
             <div class="step-circle"><i class="fa-solid fa-check"></i></div>
@@ -654,7 +625,11 @@
         }
 
         function init() {
-            cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            // Get cart with user-specific key (matching script.js logic)
+            const userEmail = localStorage.getItem('userEmail');
+            const cartKey = userEmail ? `cart_${userEmail}` : 'cart';
+            cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+            
             if (cart.length === 0) {
                 window.location.href = 'products.html';
                 return;
@@ -780,11 +755,6 @@
                 message += `--------------------------%0A`;
                 message += `*التوقيت:* ${new Date().toLocaleString('ar-EG')}`;
 
-                const whatsappNumber = '201000158934';
-                const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-                // فتح واتساب في نافذة جديدة
-                window.open(whatsappURL, '_blank');
-
                 // محاكاة الانتظار لمدة 2 ثانية قبل التوجيه لصفحة النجاح
                 setTimeout(() => {
                     try {
@@ -840,7 +810,7 @@
                                     total: total.toFixed(2),
                                     status: orderData.status || 'pending',
                                     createdAt: orderData.timestamp || new Date().toISOString(),
-                                    sellerEmail: sellerEmail
+                                    seller_email: sellerEmail
                                 };
                                 
                                 console.log(`✓ Adding seller order for ${sellerEmail}`);
@@ -855,7 +825,11 @@
                         console.log('✓ Saved to seller_orders');
                         
                         localStorage.setItem('lastOrder', JSON.stringify(orderData));
-                        localStorage.setItem('cart', '[]');
+                        
+                        // Clear cart using user-specific key (matching script.js logic)
+                        const userEmail = localStorage.getItem('userEmail');
+                        const cartKey = userEmail ? `cart_${userEmail}` : 'cart';
+                        localStorage.setItem(cartKey, '[]');
                         
                         console.log('=== Order Save Complete - Redirecting ===');
                         window.location.href = 'order-confirmation.html';

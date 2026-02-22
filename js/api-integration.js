@@ -133,16 +133,17 @@ class BODAAPIClient {
             };
 
         } else if (endpoint.includes('register')) {
-            // مسح أي بيانات سابقة
             this.clearSessionData();
 
-            // إنشاء حساب في Supabase Auth
+            const loginRedirect = `${window.location.origin}${window.location.pathname.replace('register.html', 'login.html')}`;
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
                 options: {
+                    emailRedirectTo: loginRedirect,
                     data: {
-                        full_name: data.fullName
+                        full_name: data.fullName,
+                        phone: data.phone || null
                     }
                 }
             });
@@ -155,19 +156,47 @@ class BODAAPIClient {
                 };
             }
 
-            // تحديث بيانات الجلسة
-            this.setSessionData(authData.user);
+            const now = new Date().toISOString();
+            const profilePayload = {
+                user_id: authData.user.id,
+                email: data.email,
+                fullName: data.fullName,
+                phone: data.phone || null,
+                role: 'customer',
+                status: 'active',
+                verified: false,
+                created_at: now,
+                updated_at: now
+            };
+
+            const { error: profileError } = await supabase
+                .from('boda')
+                .upsert([profilePayload], { onConflict: 'user_id' });
+
+            if (profileError) {
+                return {
+                    status: 'error',
+                    message: 'تعذر حفظ بيانات المستخدم في قاعدة البيانات',
+                    data: []
+                };
+            }
+
+            const hasSession = Boolean(authData?.session);
+            if (hasSession) {
+                this.setSessionData(authData.user);
+            } else {
+                this.clearSessionData();
+            }
 
             return {
                 status: 'success',
-                message: 'تم التسجيل بنجاح',
+                message: hasSession ? 'تم التسجيل بنجاح' : 'تم إنشاء الحساب. يرجى تأكيد البريد الإلكتروني لإكمال التسجيل.',
                 data: {
                     name: data.fullName,
                     email: data.email,
                     id: authData.user.id
                 }
             };
-
         } else if (endpoint.includes('logout')) {
             await supabase.auth.signOut();
             this.clearSessionData();

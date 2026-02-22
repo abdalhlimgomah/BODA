@@ -1,6 +1,8 @@
 // Professional Login/Register System
 // Integrates with BODA PHP API
 
+let isRegistering = false;
+
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login');
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
@@ -76,7 +78,8 @@ async function handleRegister(e) {
     e.preventDefault();
     
     const submitBtn = e.target.querySelector('button[type="submit"]');
-    if (submitBtn.disabled) return;
+    if (submitBtn.disabled || isRegistering) return;
+    isRegistering = true;
 
     const fullName = document.querySelector('#register input[name="fullName"]').value.trim();
     const email = document.querySelector('#register input[name="email"]').value.trim().toLowerCase();
@@ -96,29 +99,15 @@ async function handleRegister(e) {
 
     try {
         setButtonLoading(submitBtn, 'جاري إنشاء الحساب...');
-
-        // ✅ Step 1: Validate form data
-        showAuthMessage('جاري التحقق من البيانات...', 'info');
-        
-        // ✅ Step 2: Store registration data temporarily
-        const registrationData = {
-            fullName,
-            email,
-            phone,
-            password,
-            createdAt: new Date().toISOString()
-        };
-        
-        sessionStorage.setItem('tempRegistration', JSON.stringify(registrationData));
-        
-        showAuthMessage('جاري إرسال رمز التحقق...', 'info');
-        
-        // ✅ Step 3: Redirect to OTP verification
-        // In a real application, backend would send OTP via email here
-        setTimeout(() => {
-            window.location.href = 'verify-email.html';
-        }, 1500);
-
+        const response = await bodaAPI.register({ fullName, email, phone, password });
+        if (response.status === 'success') {
+            showAuthMessage(response.message || 'تم إنشاء الحساب بنجاح', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1600);
+        } else {
+            showAuthMessage(response.message || 'فشل عملية التسجيل.', 'error');
+        }
     } catch (error) {
         showAuthMessage(error.message || 'فشل عملية التسجيل.', 'error');
     } finally {

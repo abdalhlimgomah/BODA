@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>الملف الشخصي</title>
+<Link rel="stylesheet" href="../css/style.css">
+<style>
+body {
+    margin: 0;
+    background: #f6f6f6;
+}
+
+.container {
+    max-width: 420px;
+    margin: auto;
+    padding: 15px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    background: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.edit {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.grid .card {
+    text-align: center;
+    cursor: pointer;
+}
+
+.list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.settings {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.langs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.langs button {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.help {
+    background: #fff3cd;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.mh {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <!-- الملف -->
+    <div class="card profile">
+        <div>
+            <div id="name">,</div>
+            <small id="email">,</small>
+        </div>
+        <div class="avatar">A</div>
+        <div class="edit" id="edit">تعديل</div>
+    </div>
+
+    <!-- البطاقات -->
+    <div class="grid">
+        <div  class="mh"><a href="orders.html">الطلبات</a></div>
+        <div class="card" id="returns">الإرجاع</div>
+        <div  class="mh"><a href="wishlist.html">المفضلة</a></div>
+    </div>
+
+    <!-- القوائم -->
+    <div class="list" id="address">العناوين</div>
+    <div class="list" id="payments">المدفوعات</div>
+    <div class="list" id="warranty">مطالبات الضمان</div>
+    <div class="list" id="qr">كود QR</div>
+
+    <!-- مساعدة -->
+    <div class="help" id="help">تحتاج مساعدة؟</div>
+
+    <!-- الإعدادات -->
+    <div class="settings">
+        <button id="settings">الإعدادات</button>
+    </div>
+
+</div>
+
+<script>
+// إضافة مستمعات النقر
+document.getElementById('edit').addEventListener('click', () => {
+    document.getElementById('name').textContent = 'أحمد علي';
+    document.getElementById('email').textContent = 'ahmed@example.com';
+});
+document.getElementById('address').addEventListener('click', () => {
+    alert('عرض العناوين');
+});
+document.getElementById('payments').addEventListener('click', () => {
+    alert('عرض المدفوعات');
+});
+document.getElementById('warranty').addEventListener('click', () => {
+    alert('عرض مطالبات الضمان');
+});
+document.getElementById('qr').addEventListener('click', () => {
+    alert('عرض كود QR');
+});
+document.getElementById('help').addEventListener('click', () => {
+    alert('الاتصال بالدعم');
+});
+document.getElementById('settings').addEventListener('click', () => {
+    alert('فتح الإعدادات');
+});
+
+</script>
+
+</body>
+</html>

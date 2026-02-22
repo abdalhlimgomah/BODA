@@ -303,19 +303,10 @@
             showMessage('جاري إنهاء التسجيل...', 'info');
 
             try {
-                // إضافة علامة حساب جديد
                 registrationData.isNewAccount = true;
                 registrationData.emailVerified = true;
                 registrationData.verifiedAt = new Date().toISOString();
 
-                // حفظ بيانات المستخدم
-                localStorage.setItem('userEmail', registrationData.email);
-                localStorage.setItem('userFullName', registrationData.fullName);
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('isNewAccount', 'true');
-                localStorage.setItem('emailVerified', 'true');
-
-                // حذف البيانات المؤقتة
                 sessionStorage.removeItem('tempRegistration');
                 sessionStorage.removeItem('otp_code');
                 sessionStorage.removeItem('otp_timestamp');
@@ -323,7 +314,7 @@
                 showMessage('✅ تم التحقق بنجاح! جاري التوجيه...', 'success');
 
                 setTimeout(() => {
-                    window.location.href = '../index.html';
+                    window.location.href = 'login.html';
                 }, 1500);
             } catch (error) {
                 console.error('Error:', error);

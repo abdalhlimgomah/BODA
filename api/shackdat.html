@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة طلبات الشراكة - BODA</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9fa 100%);
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #06b6d4;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #06b6d4;
+        }
+
+        .stat-content h3 {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .applications-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .application-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .application-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .application-card.flagged {
+            border-left: 4px solid #ef4444;
+            background: linear-gradient(to right, rgba(239, 68, 68, 0.05), white);
+        }
+
+        .application-card.approved {
+            border-left: 4px solid #10b981;
+        }
+
+        .application-card.rejected {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(2, 132, 199, 0.05));
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .merchant-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.3rem;
+        }
+
+        .merchant-id {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: #b8860b;
+        }
+
+        .status-approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #7f1d1d;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .info-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: #1e293b;
+            word-break: break-word;
+        }
+
+        .logo-container {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .card-footer {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-flag {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.1));
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+
+        .btn-flag.flagged {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+        }
+
+        .btn-flag:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: white;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(6, 182, 212, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: rgba(6, 182, 212, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h2 {
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #64748b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-body {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-cancel:hover {
+            background: #cbd5e1;
+        }
+
+        .notes-section {
+            margin-top: 1.5rem;
+        }
+
+        .notes-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .notes-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+
+            .card-footer {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Notification Toast */
+        .notification-container {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            animation: slideInRight 0.3s ease;
+            min-width: 350px;
+            border-right: 4px solid;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .notification.success {
+            border-right-color: #10b981;
+        }
+
+        .notification.error {
+            border-right-color: #ef4444;
+        }
+
+        .notification.warning {
+            border-right-color: #f59e0b;
+        }
+
+        .notification.info {
+            border-right-color: #06b6d4;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .notification.success .notification-icon {
+            color: #10b981;
+        }
+
+        .notification.error .notification-icon {
+            color: #ef4444;
+        }
+
+        .notification.warning .notification-icon {
+            color: #f59e0b;
+        }
+
+        .notification.info .notification-icon {
+            color: #06b6d4;
+        }
+
+        .notification-content h4 {
+            color: #0f172a;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .notification-content p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-merchant-id {
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 6px;
+            padding: 0.5rem 0.8rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #0f172a;
+            word-break: break-all;
+            margin-top: 0.5rem;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+
+        .notification-close:hover {
+            color: #64748b;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+        }
+
+        .notification.hide {
+            animation: slideOutRight 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .notification-container {
+                right: 1rem;
+                left: 1rem;
+            }
+
+            .notification {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- رأس الصفحة -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-store"></i>
+                إدارة طلبات الشراكة
+            </h1>
+            <button class="btn btn-view" onclick="window.location.href='../pages/shacklog-view.html'">
+            <i class="fas fa-eye"></i>
+                <i class="fas fa-plus-circle"></i>
+                طلب شراكة جديد
+            </button>
+        </div>
+
+        <!-- شريط التصفية -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>الحالة:</label>
+                <select id="statusFilter" onchange="filterApplications()">
+                    <option value="">الكل</option>
+                    <option value="pending">قيد الانتظار</option>
+                    <option value="approved">موافق عليه</option>
+                    <option value="rejected">مرفوض</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>الفئة:</label>
+                <select id="categoryFilter" onchange="filterApplications()">
+                    <option value="">الكل</option>
+                    <option value="electronics">الإلكترونيات</option>
+                    <option value="fashion">الملابس والموضة</option>
+                    <option value="home">الأثاث والديكور</option>
+                    <option value="food">الغذاء والمشروبات</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>البحث:</label>
+                <input type="text" id="searchInput" placeholder="ابحث برقم الطلب أو الاسم..." onkeyup="filterApplications()">
+            </div>
+            <div class="filter-group">
+                <label>
+                    <input type="checkbox" id="flaggedOnly" onchange="filterApplications()"> المعلمة فقط
+                </label>
+            </div>
+        </div>
+
+        <!-- إحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>إجمالي الطلبات</h3>
+                    <div class="stat-value" id="totalCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-hourglass-half" style="color: #f59e0b;"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>قيد الانتظار</h3>
+                    <div class="stat-value" id="pendingCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>موافق عليه</h3>
+                    <div class="stat-value" id="approvedCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-times-circle" style="color: #ef4444;"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>مرفوض</h3>
+                    <div class="stat-value" id="rejectedCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قائمة الطلبات -->
+        <div class="applications-container" id="applicationsContainer">
+            <!-- يتم ملء الطلبات هنا -->
+        </div>
+    </div>
+
+    <!-- Modal for Notes -->
+    <div class="modal" id="notesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-sticky-note"></i>
+                إضافة ملاحظات
+            </div>
+            <div class="modal-body">
+                <p>أضف ملاحظات إدارية عن هذا الطلب:</p>
+                <textarea class="notes-input" id="notesInput" placeholder="اكتب الملاحظات هنا..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeNotesModal()">إلغاء</button>
+                <button class="btn btn-approve" onclick="saveNotes()">حفظ الملاحظات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Confirmation -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header" id="confirmTitle">
+                <i class="fas fa-exclamation-triangle"></i>
+                تأكيد الإجراء
+            </div>
+            <div class="modal-body" id="confirmMessage">
+                هل أنت متأكد من هذا الإجراء؟
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeConfirmModal()">إلغاء</button>
+                <button class="btn btn-approve" id="confirmBtn" onclick="confirmAction()">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/session-manager.js"></script>
+    <script>
+        let currentAction = null;
+        let currentMerchantId = null;
+        let allApplications = [];
+
+        // ========== تحميل البيانات ==========
+        function loadApplications() {
+            const applications = JSON.parse(localStorage.getItem('partner_registrations') || '[]');
+            allApplications = applications;
+            displayApplications(applications);
+            updateStats();
+        }
+
+        // ========== عرض البيانات ==========
+        function displayApplications(applications) {
+            const container = document.getElementById('applicationsContainer');
+            
+            if (applications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h2>لا توجد طلبات</h2>
+                        <p>لم تتلقَّ أي طلبات شراكة حتى الآن</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = applications.map(app => `
+                <div class="application-card ${app.status === 'flagged' ? 'flagged' : ''} ${app.status === 'approved' ? 'approved' : ''} ${app.status === 'rejected' ? 'rejected' : ''}" data-id="${app.merchantId}">
+                    <div class="card-header">
+                        <div class="header-title">
+                            <div class="merchant-name">${app.store.name}</div>
+                            <div class="merchant-id">ID: ${app.merchantId}</div>
+                        </div>
+                        <span class="status-badge status-${app.status || 'pending'}">${getStatusText(app.status)}</span>
+                    </div>
+                    
+                    <div class="card-content">
+                        <!-- معلومات المالك -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-user"></i>
+                                معلومات المالك
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">الاسم</span>
+                                    <span class="info-value">${app.owner.name}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">البريد الإلكتروني</span>
+                                    <span class="info-value">${app.owner.email}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">الهاتف</span>
+                                    <span class="info-value">${app.owner.phone}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">رقم الهوية</span>
+                                    <span class="info-value">${app.owner.nationalId}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- معلومات المتجر -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-shopping-bag"></i>
+                                معلومات المتجر
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">فئة المنتجات</span>
+                                    <span class="info-value">${getCategoryText(app.store.category)}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">الوصف</span>
+                                    <span class="info-value">${app.store.description.substring(0, 100)}...</span>
+                                </div>
+                            </div>
+                            ${app.store.logo ? `
+                                <div class="logo-container">
+                                    <img src="${app.store.logo}" alt="شعار المتجر">
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- معلومات الموقع -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                معلومات الموقع
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">الدولة</span>
+                                    <span class="info-value">${app.location.country}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">المدينة</span>
+                                    <span class="info-value">${app.location.city}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">العنوان</span>
+                                    <span class="info-value">${app.location.address}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">الهاتف</span>
+                                    <span class="info-value">${app.location.phone}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- معلومات الأعمال -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-file-contract"></i>
+                                معلومات الأعمال
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">السجل التجاري</span>
+                                    <span class="info-value">${app.business.commercialRegistry}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">نوع النشاط</span>
+                                    <span class="info-value">${getBusinessTypeText(app.business.businessType)}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">رقم VAT</span>
+                                    <span class="info-value">${app.business.vatNumber || 'غير متوفر'}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- معلومات البنك -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-university"></i>
+                                معلومات البنك
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">اسم البنك</span>
+                                    <span class="info-value">${app.bank.name}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">صاحب الحساب</span>
+                                    <span class="info-value">${app.bank.accountHolder}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">IBAN</span>
+                                    <span class="info-value">${app.bank.iban}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">نوع الحساب</span>
+                                    <span class="info-value">${getAccountTypeText(app.bank.accountType)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الملاحظات -->
+                        ${app.notes ? `
+                            <div class="info-section">
+                                <div class="section-title">
+                                    <i class="fas fa-sticky-note"></i>
+                                    الملاحظات الإدارية
+                                </div>
+                                <div class="info-value" style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                                    ${app.notes}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <!-- تاريخ التقديم -->
+                        <div class="info-section">
+                            <div class="section-title">
+                                <i class="fas fa-calendar"></i>
+                                تاريخ التقديم
+                            </div>
+                            <div class="info-value">${new Date(app.createdAt).toLocaleString('ar-EG')}</div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button class="btn btn-flag ${app.status === 'flagged' ? 'flagged' : ''}" 
+                                onclick="toggleFlag('${app.merchantId}')">
+                            <i class="fas fa-flag"></i>
+                            ${app.status === 'flagged' ? 'إزالة العلم' : 'علم مهم'}
+                        </button>
+                        <button class="btn btn-view" onclick="addNotes('${app.merchantId}')">
+                            <i class="fas fa-pencil-alt"></i>
+                            ملاحظات
+                        </button>
+                        ${app.status !== 'approved' ? `
+                            <button class="btn btn-approve" onclick="approveApplication('${app.merchantId}')">
+                                <i class="fas fa-check"></i>
+                                موافقة
+                            </button>
+                        ` : ''}
+                        ${app.status !== 'rejected' ? `
+                            <button class="btn btn-reject" onclick="rejectApplication('${app.merchantId}')">
+                                <i class="fas fa-times"></i>
+                                رفض
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-delete" onclick="deleteApplication('${app.merchantId}')">
+                            <i class="fas fa-trash"></i>
+                            حذف
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== تحديث الإحصائيات ==========
+        function updateStats() {
+            const total = allApplications.length;
+            const pending = allApplications.filter(a => a.status === 'pending').length;
+            const approved = allApplications.filter(a => a.status === 'approved').length;
+            const rejected = allApplications.filter(a => a.status === 'rejected').length;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+        }
+
+        // ========== الموافقة على الطلب ==========
+        function approveApplication(merchantId) {
+            currentAction = 'approve';
+            currentMerchantId = merchantId;
+            document.getElementById('confirmTitle').innerHTML = '<i class="fas fa-check-circle" style="color: #10b981;"></i> تأكيد الموافقة';
+            document.getElementById('confirmMessage').textContent = 'هل تريد الموافقة على هذا الطلب؟';
+            document.getElementById('confirmBtn').textContent = 'موافقة';
+            document.getElementById('confirmBtn').className = 'btn btn-approve';
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        // ========== رفض الطلب ==========
+        function rejectApplication(merchantId) {
+            currentAction = 'reject';
+            currentMerchantId = merchantId;
+            document.getElementById('confirmTitle').innerHTML = '<i class="fas fa-times-circle" style="color: #ef4444;"></i> تأكيد الرفض';
+            document.getElementById('confirmMessage').textContent = 'هل تريد رفض هذا الطلب؟';
+            document.getElementById('confirmBtn').textContent = 'رفض';
+            document.getElementById('confirmBtn').className = 'btn btn-reject';
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        // ========== حذف الطلب ==========
+        function deleteApplication(merchantId) {
+            currentAction = 'delete';
+            currentMerchantId = merchantId;
+            document.getElementById('confirmTitle').innerHTML = '<i class="fas fa-exclamation-triangle"></i> تأكيد الحذف';
+            document.getElementById('confirmMessage').textContent = 'هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء!';
+            document.getElementById('confirmBtn').textContent = 'حذف نهائياً';
+            document.getElementById('confirmBtn').className = 'btn btn-delete';
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        // ========== تنفيذ الإجراء ==========
+        function confirmAction() {
+            const applications = allApplications;
+            const index = applications.findIndex(a => a.merchantId === currentMerchantId);
+            
+            if (index !== -1) {
+                const app = applications[index];
+                let message = '';
+                let title = '';
+                let type = '';
+                let shouldRedirect = false;
+                let redirectUrl = '';
+
+                if (currentAction === 'approve') {
+                    applications[index].status = 'approved';
+                    applications[index].approvedAt = new Date().toISOString();
+                    
+                    title = 'تم قبول الشراكة! ✓';
+                    message = `تم قبول طلب الشراكة من ${app.store.name}`;
+                    type = 'success';
+
+                    // حفظ البائع الجديد في النظام
+                    const newSeller = {
+                        name: app.owner.name,
+                        email: app.owner.email,
+                        phone: app.owner.phone,
+                        nationalId: app.owner.nationalId,
+                        storeName: app.store.name,
+                        storeCategory: app.store.category,
+                        storeDescription: app.store.description,
+                        location: app.location,
+                        business: app.business,
+                        bank: app.bank,
+                        merchantId: app.merchantId,
+                        registeredAt: app.createdAt,
+                        approvedAt: applications[index].approvedAt
+                    };
+
+                    // حفظ بيانات البائع
+                    localStorage.setItem(`seller_${app.owner.email}`, JSON.stringify(newSeller));
+                    
+                    // إنشاء مجلد منتجات للبائع الجديد
+                    localStorage.setItem(`seller_products_${app.owner.email}`, JSON.stringify([]));
+                    
+                    // إنشاء حساب تسجيل دخول للبائع
+                    const sellers = JSON.parse(localStorage.getItem('sellers') || '{}');
+                    sellers[app.owner.email] = {
+                        name: app.owner.name,
+                        email: app.owner.email,
+                        password: app.owner.nationalId, // كلمة مرور مؤقتة
+                        merchantId: app.merchantId,
+                        status: 'approved'
+                    };
+                    localStorage.setItem('sellers', JSON.stringify(sellers));
+
+                    // إعادة توجيه تلقائي بعد 3 ثوانية
+                    shouldRedirect = true;
+                    redirectUrl = `../pages/shacksf.html?seller=${encodeURIComponent(app.owner.email)}&merchantId=${app.merchantId}`;
+
+                } else if (currentAction === 'reject') {
+                    applications[index].status = 'rejected';
+                    title = 'تم رفض الطلب ✗';
+                    message = `لم يتم قبول طلب الشراكة من ${app.store.name} لعدم إدخال البيانات بشكل صحيح`;
+                    type = 'error';
+                } else if (currentAction === 'delete') {
+                    applications.splice(index, 1);
+                }
+
+                localStorage.setItem('partner_registrations', JSON.stringify(applications));
+                allApplications = applications;
+                loadApplications();
+                closeConfirmModal();
+
+                // عرض الإشعار
+                if (title && message) {
+                    showNotification(title, message, app.merchantId, type);
+                }
+
+                // إعادة التوجيه بعد الموافقة
+                if (shouldRedirect && redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 3000);
+                }
+            }
+        }
+
+        // ========== عرض الإشعارات ==========
+        function showNotification(title, message, merchantId, type = 'info', duration = 6000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle notification-icon"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle notification-icon"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-circle notification-icon"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle notification-icon"></i>';
+            }
+
+            notification.innerHTML = `
+                ${icon}
+                <div class="notification-content">
+                    <h4>${title}</h4>
+                    <p>${message}</p>
+                    ${merchantId ? `<div class="notification-merchant-id">معرف الشريك: ${merchantId}</div>` : ''}
+                </div>
+                <button class="notification-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            container.appendChild(notification);
+
+            // إزالة الإشعار بعد المدة المحددة
+            setTimeout(() => {
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, duration);
+        }
+
+        // ========== إضافة علم مهم ==========
+        function toggleFlag(merchantId) {
+            const applications = allApplications;
+            const app = applications.find(a => a.merchantId === merchantId);
+            
+            if (app) {
+                app.status = app.status === 'flagged' ? 'pending' : 'flagged';
+                localStorage.setItem('partner_registrations', JSON.stringify(applications));
+                allApplications = applications;
+                loadApplications();
+            }
+        }
+
+        // ========== إضافة ملاحظات ==========
+        function addNotes(merchantId) {
+            currentMerchantId = merchantId;
+            const app = allApplications.find(a => a.merchantId === merchantId);
+            if (app) {
+                document.getElementById('notesInput').value = app.notes || '';
+                document.getElementById('notesModal').classList.add('show');
+            }
+        }
+
+        // ========== حفظ الملاحظات ==========
+        function saveNotes() {
+            const notes = document.getElementById('notesInput').value;
+            const applications = allApplications;
+            const app = applications.find(a => a.merchantId === currentMerchantId);
+            
+            if (app) {
+                app.notes = notes;
+                localStorage.setItem('partner_registrations', JSON.stringify(applications));
+                allApplications = applications;
+                loadApplications();
+                closeNotesModal();
+            }
+        }
+
+        // ========== تصفية البيانات ==========
+        function filterApplications() {
+            const status = document.getElementById('statusFilter').value;
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const flaggedOnly = document.getElementById('flaggedOnly').checked;
+
+            let filtered = allApplications;
+
+            if (status) {
+                filtered = filtered.filter(a => a.status === status);
+            }
+            if (category) {
+                filtered = filtered.filter(a => a.store.category === category);
+            }
+            if (flaggedOnly) {
+                filtered = filtered.filter(a => a.status === 'flagged');
+            }
+            if (search) {
+                filtered = filtered.filter(a =>
+                    a.merchantId.toLowerCase().includes(search) ||
+                    a.store.name.toLowerCase().includes(search) ||
+                    a.owner.email.toLowerCase().includes(search) ||
+                    a.owner.name.toLowerCase().includes(search)
+                );
+            }
+
+            displayApplications(filtered);
+        }
+
+        // ========== دوال مساعدة ==========
+        function getStatusText(status) {
+            const texts = {
+                'pending': 'قيد الانتظار',
+                'approved': 'موافق عليه',
+                'rejected': 'مرفوض',
+                'flagged': 'معلم مهم'
+            };
+            return texts[status] || 'غير معروف';
+        }
+
+        function getCategoryText(category) {
+            const categories = {
+                'electronics': 'الإلكترونيات',
+                'fashion': 'الملابس والموضة',
+                'home': 'الأثاث والديكور',
+                'beauty': 'الجمال والعناية',
+                'food': 'الغذاء والمشروبات',
+                'sports': 'الرياضة واللياقة',
+                'books': 'الكتب والتعليم',
+                'toys': 'الألعاب والمنتجات',
+                'automotive': 'السيارات والملحقات',
+                'other': 'فئات أخرى'
+            };
+            return categories[category] || category;
+        }
+
+        function getBusinessTypeText(type) {
+            const types = {
+                'individual': 'فرد (عامل حر)',
+                'partnership': 'شراكة',
+                'llc': 'شركة ذات مسؤولية محدودة',
+                'jointstock': 'شركة مساهمة',
+                'corporation': 'شركة مختلطة'
+            };
+            return types[type] || type;
+        }
+
+        function getAccountTypeText(type) {
+            const types = {
+                'savings': 'حساب توفير',
+                'checking': 'حساب جاري',
+                'business': 'حساب تجاري'
+            };
+            return types[type] || type;
+        }
+
+        // ========== إغلاق Modals ==========
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notesModal').classList.remove('show');
+        }
+
+        // ========== تحميل البيانات عند تحميل الصفحة ==========
+        window.addEventListener('load', loadApplications);
+    </script>
+</body>
+</html>

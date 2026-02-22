@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         .register-container {
-            max-width: 450px;
+            max-width: 400px;
             margin: 2rem auto;
             padding: 2rem;
             background: rgba(255, 255, 255, 0.1);
@@ -37,7 +37,7 @@
         .register-container input[type="tel"] {
             width: 100%;
             padding: 1rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
@@ -66,7 +66,7 @@
             width: 100%;
             padding: 1rem;
             min-height: 48px;
-            background: linear-gradient(45deg, #ff6b35, #ff8450);
+            background: linear-gradient(45deg, #00d4ff, #090979);
             color: white;
             border: none;
             border-radius: 8px;
@@ -74,11 +74,6 @@
             font-weight: bold;
             font-size: 1rem;
             transition: all 0.3s ease;
-        }
-
-        .register-container button:hover {
-            background: linear-gradient(45deg, #ff8450, #ff6b35);
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
         }
 
         .register-container button:active {
@@ -147,8 +142,6 @@
         }
 
         .register-container a {
-            display: block;
-            margin-top: 1.5rem;
             color: #00d4ff;
             text-decoration: none;
             transition: color 0.3s ease;
@@ -180,33 +173,6 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo-container" onclick="window.location.href='../index.html'" style="cursor: pointer;">
-            <div class="logo">🛍️ BODA</div>
-        </div>
-        <div class="header-search">
-            <form action="products.html" method="GET" class="search-form">
-                <input type="text" name="search" placeholder="ابحث عن المنتجات..." aria-label="Search">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-        <nav class="nav-menu">
-            <a href="../index.html">🏠 الرئيسية</a>
-            <a href="products.html">📦 المنتجات</a>
-            <a href="login.html" id="login-link">🔐 تسجيل الدخول </a>
-            <a href="orders.html">📋 الطلبات</a>
-            <a href="wishlist.html">❤️ المفضلة</a>
-        </nav>
-        <div class="header-actions">
-            <a href="cart.html" class="cart-link">
-                <div id="nav-cart-count-container" class="nav-cart-count-container">
-                    <span id="nav-cart-count" aria-hidden="true" class="nav-cart-count nav-cart-0">0</span>
-                    <span class="nav-cart-icon">🛒</span>
-                </div>
-                السلة
-            </a>
-        </div>
-    </header>
 
     <div class="register-container">
         <h2>إنشاء حساب جديد</h2>
@@ -219,7 +185,7 @@
                 <input type="email" name="email" placeholder="البريد الإلكتروني" inputmode="email" required>
             </div>
             <div class="form-group">
-                <input type="tel" name="phone" placeholder="رقم الهاتف (اختياري)" inputmode="tel">
+                <input type="tel" name="phone" placeholder="رقم الهاتف" inputmode="tel" required autocomplete="tel">
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="كلمة المرور" required>
@@ -229,12 +195,8 @@
             </div>
             <button type="submit">إنشاء حساب</button>
         </form>
-        <div class="auth-divider">أو</div>
-        <button type="button" class="google-btn" id="google-login-btn">
-            <i class="fa-brands fa-google"></i>
-            التسجيل باستخدام Google
-        </button>
-        <a href="login.html">لديك حساب بالفعل؟ تسجيل الدخول</a>
+        <p style="margin-top: 0.75rem; color: #b0b0b0; font-size: 0.9rem;">بعد تأكيد البريد الإلكتروني سيتم تحويلك لتسجيل الدخول</p>
+        <a href="login.html" style="display: block; margin-top: 1rem; font-weight: bold;">لديك حساب بالفعل؟ تسجيل الدخول</a>
     </div>
 
     <!-- Mock API for offline support -->
